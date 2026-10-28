@@ -1,0 +1,167 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <meta name="referrer" content="no-referrer">
+  <title>Payment guide - Rongyuan Intel Tech</title>
+  <meta name="description" content="Detached public settlement presence for Rongyuan Intel Tech. Wire details, payment guide, and contact - no local control endpoints.">
+  <meta property="og:title" content="Payment guide - Rongyuan Intel Tech">
+  <meta property="og:description" content="Verified HSBC settlement route and order-linked payment guide.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,550;9..144,650&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/site.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a class="brand" href="./index.html">Rongyuan Intel Tech</a>
+      <div class="nav-links">
+        <a href="./index.html">Home</a>
+        <a href="./about.html">About</a>
+        <a href="./process.html">Process</a>
+        <a href="./settlement.html">Settlement</a>
+        <a href="./payment-guide.html" style="color:var(--ink);font-weight:600">Payment</a>
+        <a href="./faq.html">FAQ</a>
+        <a href="./contact.html">Contact</a>
+        <a href="./privacy.html">Privacy</a>
+      </div>
+    </nav>
+        <div class="badge">Payment guide</div>
+    <h1>Order-linked payment guide</h1>
+    <p class="lede">Detached public host. Settlement details are sealed ciphertext here; unlock tokens are issued only by the local control plane.</p>
+    <section class="card">
+      <h2>Your order</h2>
+      <div class="row"><div class="label">Order ID</div><div class="value"><span id="orderId">-</span></div></div>
+      <div class="row"><div class="label">Amount due</div><div class="value" id="amountDue">-</div></div>
+      <p class="note" id="orderHint">Open this page from your payment email so the unlock token attaches.</p>
+    </section>
+    <section class="card" id="lockCard">
+      <h2>Locked until unlock token</h2>
+      <p class="note" id="lockNote">This public host cannot synthesize wire details alone. Use the emailed payment link (includes token t=).</p>
+    </section>
+    <section class="card" id="wireCard" hidden>
+      <h2>Beneficiary bank details</h2>
+      <div class="row"><div class="label">Beneficiary</div><div class="value" id="beneficiaryName">-</div></div>
+      <div class="row"><div class="label">Account</div><div class="value" id="accountNumber">-</div></div>
+      <div class="row"><div class="label">SWIFT</div><div class="value" id="swift">-</div></div>
+      <div class="row"><div class="label">Bank</div><div class="value" id="bankName">-</div></div>
+      <div class="row"><div class="label">Address</div><div class="value" id="bankAddress">-</div></div>
+      <div class="row"><div class="label">Currency</div><div class="value" id="currency">-</div></div>
+      <div class="row"><div class="label">Purpose</div><div class="value" id="purpose">-</div></div>
+      <div class="actions">
+        <button type="button" class="cta" id="copyAccount" style="border:0;cursor:pointer">Copy account</button>
+        <button type="button" class="cta secondary" id="copyAll" style="cursor:pointer">Copy all wire details</button>
+      </div>
+    </section>
+    <section class="card">
+      <h2>After you pay</h2>
+      <p class="note">Reply with remittance reference + order ID. Crypto rails (when issued) stay off this static host.</p>
+    </section>
+    <script>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      var orderId = (params.get("orderId") || "").trim();
+      var token = (params.get("t") || "").trim();
+      var orderEl = document.getElementById("orderId");
+      var hintEl = document.getElementById("orderHint");
+      var amountEl = document.getElementById("amountDue");
+      var lockNote = document.getElementById("lockNote");
+      function set(id, v) { var el = document.getElementById(id); if (el && v) el.textContent = v; }
+      function copyText(text, button, okLabel) {
+        var done = function () { var old = button.textContent; button.textContent = okLabel || "Copied"; setTimeout(function () { button.textContent = old; }, 1400); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(function () { window.prompt("Copy:", text); });
+        else window.prompt("Copy:", text);
+      }
+            function b64ToBytes(b64) {
+        var bin = atob(b64);
+        var out = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+        return out;
+      }
+      function b64urlToBytes(s) {
+        s = (s || "").replace(/-/g, "+").replace(/_/g, "/");
+        while (s.length % 4) s += "=";
+        return b64ToBytes(s);
+      }
+      async function unlockGuideEnvelope(envelope, token) {
+        if (!envelope || !envelope.enc || !token || !window.crypto || !window.crypto.subtle) return null;
+        var keyBytes = b64urlToBytes(token);
+        var key = await crypto.subtle.importKey("raw", keyBytes, "AES-GCM", false, ["decrypt"]);
+        var nonce = b64ToBytes(envelope.enc.nonce);
+        var tag = b64ToBytes(envelope.enc.tag);
+        var cipher = b64ToBytes(envelope.enc.ciphertext);
+        var combined = new Uint8Array(cipher.length + tag.length);
+        combined.set(cipher, 0);
+        combined.set(tag, cipher.length);
+        var plainBuf = await crypto.subtle.decrypt({ name: "AES-GCM", iv: nonce }, key, combined);
+        return JSON.parse(new TextDecoder().decode(plainBuf));
+      }
+      function applyGuide(g) {
+        if (!g) return;
+        document.getElementById("lockCard").hidden = true;
+        document.getElementById("wireCard").hidden = false;
+        if (g.amount != null) amountEl.textContent = Number(g.amount).toLocaleString(undefined, { minimumFractionDigits: 2 }) + " " + (g.currency || "USD");
+        set("beneficiaryName", g.beneficiaryName);
+        set("accountNumber", g.accountNumber);
+        set("swift", g.swift);
+        set("bankName", g.bankName);
+        set("bankAddress", g.bankAddress);
+        set("currency", g.currency || "USD");
+        set("purpose", g.remittancePurpose || ("Personal Remittance" + (orderId ? (" / order " + orderId) : "")));
+      }
+      orderEl.textContent = orderId || "not provided";
+      hintEl.textContent = !orderId
+        ? "Open this page from your payment email so the order ID and unlock token attach."
+        : (!token
+          ? ("Order " + orderId + " is sealed on this host. Re-open the emailed payment link (includes unlock token).")
+          : ("Please reference order " + orderId + " in the remittance purpose / memo when your bank allows it."));
+      if (!token) {
+        lockNote.textContent = "Missing unlock token. External host alone cannot decrypt settlement details.";
+      }
+      if (orderId) {
+        var safe = orderId.replace(/[^A-Za-z0-9._-]+/g, "-").slice(0, 80);
+        fetch("./guides/" + encodeURIComponent(safe) + ".json", { cache: "no-store", referrerPolicy: "no-referrer" })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (payload) {
+            if (!payload) return;
+            if (payload.schema === "stone.detached-guide.v1" && payload.enc) {
+              if (!token) return;
+              return unlockGuideEnvelope(payload, token).then(applyGuide).catch(function () {
+                lockNote.textContent = "Unlock failed. Request a fresh payment link from the control plane.";
+              });
+            }
+            applyGuide(payload);
+          })
+          .catch(function () {});
+      }
+      document.getElementById("copyAccount").addEventListener("click", function () {
+        copyText(document.getElementById("accountNumber").textContent.trim(), this);
+      });
+      document.getElementById("copyAll").addEventListener("click", function () {
+        var block = [
+          "Beneficiary name: " + document.getElementById("beneficiaryName").textContent.trim(),
+          "Account number: " + document.getElementById("accountNumber").textContent.trim(),
+          "SWIFT/BIC: " + document.getElementById("swift").textContent.trim(),
+          "Bank name: " + document.getElementById("bankName").textContent.trim(),
+          "Bank address: " + document.getElementById("bankAddress").textContent.trim(),
+          "Currency: " + document.getElementById("currency").textContent.trim(),
+          "Remittance purpose: " + document.getElementById("purpose").textContent.trim(),
+          orderId ? ("Order ID: " + orderId) : "",
+          amountEl.textContent && amountEl.textContent !== "-" ? ("Amount due: " + amountEl.textContent) : ""
+        ].filter(Boolean).join("\\n");
+        copyText(block, this, "Copied all");
+      });
+    })();
+    </script>
+    <footer>
+      Public presence surface only. Local control plane is not exposed on this host.
+      Settled capital is recognized only after verified remittance / crypto evidence - never invented.
+      <br><a href="./disclaimer.html">Disclaimer</a> · <a href="./site.json">site.json</a>
+    </footer>
+  </div>
+</body>
+</html>
