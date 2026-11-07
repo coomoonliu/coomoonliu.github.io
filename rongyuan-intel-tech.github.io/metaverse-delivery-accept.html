@@ -100,6 +100,14 @@
         .catch(function () { /* optional */ })
         .then(function () { thenFn(); });
     }
+    // Stone.Services wraps Ok() as { code, message, data } — unwrap before reading Accept fields.
+    function unwrapApiPayload(body) {
+      if (body && typeof body === "object" && body.data != null && typeof body.data === "object"
+          && (body.code != null || body.message != null || body.traceId != null)) {
+        return body.data;
+      }
+      return body || {};
+    }
     function set(id, v) {
       var el = document.getElementById(id);
       if (el) el.textContent = v == null || v === "" ? "—" : String(v);
@@ -138,15 +146,17 @@
         headers: { "Accept": "application/json" }
       }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, body: j }; }); })
         .then(function (res) {
-          if (!res.ok) {
+          var b = unwrapApiPayload(res.body);
+          if (!res.ok || b.ok === false) {
             document.getElementById("statusNote").textContent =
-              (res.body && (res.body.message || res.body.error)) || ("View failed (" + res.status + ")");
+              (b && (b.message || b.error || b.note))
+              || (res.body && (res.body.message || res.body.error))
+              || ("View failed (" + res.status + ")");
             return;
           }
-          var b = res.body || {};
           set("paymentOrderId", b.freeEntitlement ? "free entitlement" : "paid / optional");
           set("amount", (b.amount != null ? b.amount : "—") + (b.currency ? " " + b.currency : ""));
-          set("fulfillment", b.fulfillmentStatus);
+          set("fulfillment", b.fulfillmentStatus || (b.accepted ? "Accepted" : "—"));
           document.getElementById("statusNote").textContent = b.note || "";
           if (b.packMarkdown) {
             document.getElementById("packCard").hidden = false;
@@ -171,12 +181,13 @@
           body: JSON.stringify({ orderId: orderId, token: token, feedback: feedback || null })
         }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
           .then(function (res) {
-            if (!res.ok) {
-              setStatus((res.body && res.body.message) || "Accept failed", false);
+            var b = unwrapApiPayload(res.body);
+            if (!res.ok || b.ok === false) {
+              setStatus((b && (b.message || b.error)) || (res.body && res.body.message) || "Accept failed", false);
               return;
             }
-            setStatus((res.body && res.body.message) || "Accepted — free loop recorded", true);
-            set("fulfillment", (res.body && res.body.status) || "Accepted");
+            setStatus((b && b.message) || "Accepted — free loop recorded", true);
+            set("fulfillment", (b && b.status) || "Accepted");
           })
           .catch(function (err) { setStatus(describeReachFailure(err), false); });
       });
