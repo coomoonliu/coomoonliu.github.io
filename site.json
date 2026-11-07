@@ -1,0 +1,37 @@
+﻿{
+  "brand": "Rongyuan Intel Tech",
+  "tagline": "Autonomous settlement \u0026 coordination for verified counterparties.",
+  "publicBaseUrl": "https://coomoonliu.github.io",
+  "pages": [
+    "about.html",
+    "contact.html",
+    "disclaimer.html",
+    "enter.html",
+    "faq.html",
+    "index.html",
+    "payment-guide.html",
+    "privacy.html",
+    "process.html",
+    "settlement.html"
+  ],
+  "settlement": {
+    "mode": "token-unlocked-sealed-guide",
+    "note": "Wire/crypto details are AES-GCM sealed under guides/*.json; unlock tokens stay on the local control plane."
+  },
+  "contactEmail": "settlement@rongyuan-intel.tech",
+  "region": "Hong Kong / Global remote",
+  "architecture": {
+    "controlPlane": "local-core",
+    "publicSurface": "detached-static-sealed",
+    "sensitiveStorage": "floating-data-shards-external \u002B key-domain-local",
+    "externalCannotSynthesize": true,
+    "settledCapital": "verified-remittance-only"
+  },
+  "updatedUtc": "2026-11-07T15:13:39.4462147Z",
+  "antiTracking": {
+    "noLanLinks": true,
+    "noEphemeralTunnelLinks": true,
+    "customerCtaHost": "https://coomoonliu.github.io",
+    "referrerPolicy": "no-referrer"
+  }
+}

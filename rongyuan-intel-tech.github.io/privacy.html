@@ -1,0 +1,54 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <meta name="referrer" content="no-referrer">
+  <title>Privacy - Rongyuan Intel Tech</title>
+  <meta name="description" content="Detached public settlement presence for Rongyuan Intel Tech. Wire details, payment guide, and contact - no local control endpoints.">
+  <meta property="og:title" content="Privacy - Rongyuan Intel Tech">
+  <meta property="og:description" content="Verified HSBC settlement route and order-linked payment guide.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,550;9..144,650&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/site.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a class="brand" href="./index.html">Rongyuan Intel Tech</a>
+      <div class="nav-links">
+        <a href="./index.html">Home</a>
+        <a href="./about.html">About</a>
+        <a href="./process.html">Process</a>
+        <a href="./settlement.html">Settlement</a>
+        <a href="./payment-guide.html">Payment</a>
+        <a href="./faq.html">FAQ</a>
+        <a href="./contact.html">Contact</a>
+        <a href="./privacy.html" style="color:var(--ink);font-weight:600">Privacy</a>
+      </div>
+    </nav>
+        <div class="badge">Privacy &amp; data</div>
+    <h1>How public and control data are separated</h1>
+    <section class="card">
+      <h2>Public surface</h2>
+      <p class="note">This host publishes sealed envelopes and contact channels only. It does not expose local IP addresses, operator tunnels, machine identifiers, or plaintext wire/crypto details.</p>
+    </section>
+    <section class="card">
+      <h2>Floating encrypted storage</h2>
+      <p class="note">Sensitive operational payloads are AES-GCM encrypted, XOR-sharded, and stored as opaque data shards on independent external endpoints. Nonce, tag, and DEK shards remain in the local controlled key domain. External multi-points cannot independently read or synthesize content.</p>
+    </section>
+    <section class="card">
+      <h2>Capital recognition</h2>
+      <p class="note">Settled balances are recognized only after verified remittance or crypto evidence is ingested by the control plane. Public pages never invent capital.</p>
+    </section>
+    <footer>
+      Public presence surface only. Local control plane is not exposed on this host.
+      Settled capital is recognized only after verified remittance / crypto evidence - never invented.
+      <br><a href="./disclaimer.html">Disclaimer</a> · <a href="./site.json">site.json</a>
+    </footer>
+  </div>
+</body>
+</html>
