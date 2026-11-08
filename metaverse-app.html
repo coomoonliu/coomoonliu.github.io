@@ -168,6 +168,7 @@
         <div class="app-actions" style="margin-top:8px;margin-bottom:4px">
           <button type="button" class="cta secondary" id="btnPromotePack" data-i18n="btnPromotePack">Promo pack</button>
           <button type="button" class="cta secondary" id="btnAdaptHint" data-i18n="btnAdaptHint">Platform adapt</button>
+          <button type="button" class="cta secondary" id="btnPlatformCerts" data-i18n="btnPlatformCerts">Store cert queue</button>
         </div>
         <pre class="pack-preview" id="autonomyOut" hidden></pre>
         <div class="row"><div class="label" data-i18n="stInstallLabel">Install</div><div class="value" id="stInstall">browser tab</div></div>
@@ -236,6 +237,7 @@
         stAutonomyLabel: "Client autonomy",
         btnPromotePack: "Promo pack",
         btnAdaptHint: "Platform adapt",
+        btnPlatformCerts: "Store cert queue",
         navCreate: "Create",
         phoneTitle: "Phone install",
         phoneBody: "Safari/Chrome → Share / menu → <strong>Add to Home Screen</strong>. Accept emails open the Accept tab with your pack token.",
@@ -316,6 +318,7 @@
         stAutonomyLabel: "客户端自治",
         btnPromotePack: "推广包",
         btnAdaptHint: "平台适配",
+        btnPlatformCerts: "商店认证队列",
         navCreate: "创建",
         phoneTitle: "手机安装",
         phoneBody: "Safari/Chrome → 分享/菜单 → <strong>添加到主屏幕</strong>。Accept 邮件会打开 Accept 页并带上包令牌。",
@@ -1017,6 +1020,20 @@
           out.textContent = JSON.stringify(b, null, 2);
         })
         .catch(function () { out.textContent = "adapt unreachable"; });
+    });
+
+    document.getElementById("btnPlatformCerts").addEventListener("click", function () {
+      var out = document.getElementById("autonomyOut");
+      if (!apiBase) return;
+      out.hidden = false;
+      out.textContent = "…";
+      fetch(apiUrl("/api/public/metaverse-client/platforms"), { credentials: "omit" })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          var b = unwrapApiPayload(j);
+          out.textContent = JSON.stringify(b, null, 2);
+        })
+        .catch(function () { out.textContent = "platforms unreachable"; });
     });
 
     document.getElementById("btnRefreshStatus").addEventListener("click", refreshStatus);
