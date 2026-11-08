@@ -32,6 +32,13 @@ body.app-shell {
   padding-top: max(14px, env(safe-area-inset-top, 14px));
 }
 
+.app-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .app-brand {
   font-family: "Fraunces", Georgia, serif;
   font-size: 1.45rem;
@@ -45,6 +52,32 @@ body.app-shell {
   margin: 4px 0 0;
   color: var(--muted);
   font-size: 0.88rem;
+}
+
+.app-lang {
+  display: inline-flex;
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--term-panel);
+}
+
+.lang-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.lang-btn.active {
+  background: #0b6e4f;
+  color: #fff;
 }
 
 .app-status-chip {

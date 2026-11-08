@@ -23,103 +23,112 @@
 <body class="app-shell">
   <div class="app-frame">
     <header class="app-top">
-      <h1 class="app-brand">Rongyuan Metaverse</h1>
-      <p class="app-sub">Mobile terminal · free-first · Settled never invented</p>
-      <div class="app-status-chip" id="apiChip"><span class="dot"></span><span id="apiChipText">API: resolving…</span></div>
+      <div class="app-top-row">
+        <div>
+          <h1 class="app-brand">Rongyuan Metaverse</h1>
+          <p class="app-sub" data-i18n="sub">Mobile terminal · free-first · Settled never invented</p>
+        </div>
+        <div class="app-lang" role="group" aria-label="Language">
+          <button type="button" id="btnLangEn" class="lang-btn active" data-lang="en">EN</button>
+          <button type="button" id="btnLangZh" class="lang-btn" data-lang="zh">中文</button>
+        </div>
+      </div>
+      <div class="app-status-chip" id="apiChip"><span class="dot"></span><span id="apiChipText" data-i18n="apiResolving">API: resolving…</span></div>
       <div class="install-banner" id="installBanner">
-        <span>Install this terminal on your phone</span>
-        <button type="button" id="btnInstall">Install</button>
+        <span data-i18n="installTip">Install this terminal on your phone</span>
+        <button type="button" id="btnInstall" data-i18n="installBtn">Install</button>
       </div>
     </header>
 
     <main class="app-main">
       <section class="app-panel" data-panel="home">
-        <h2>Enter free</h2>
-        <p>Zero-price join. Settlement is optional and parallel — never a door toll.</p>
+        <h2 data-i18n="homeTitle">Enter free</h2>
+        <p data-i18n="homeBody">Zero-price join. Settlement is optional and parallel — never a door toll.</p>
         <div class="app-actions">
-          <button type="button" class="cta" id="btnFreeJoin">Join free</button>
-          <a class="cta secondary" href="./enter.html">Full enter page</a>
-          <a class="cta secondary" href="./process.html">How it works</a>
+          <button type="button" class="cta" id="btnFreeJoin" data-i18n="joinFree">Join free</button>
+          <a class="cta secondary" href="./enter.html" data-i18n="fullEnter">Full enter page</a>
+          <a class="cta secondary" href="./process.html" data-i18n="howWorks">How it works</a>
         </div>
         <p class="note" id="homeStatus" style="margin-top:12px"></p>
         <div class="app-panel" style="margin:14px 0 0;padding:12px;background:rgba(11,110,79,.06);border-style:dashed">
-          <h2 style="font-size:0.95rem">Phone install</h2>
-          <p style="margin:0">Safari/Chrome → Share / menu → <strong>Add to Home Screen</strong>. Accept emails open the Accept tab with your pack token.</p>
+          <h2 style="font-size:0.95rem" data-i18n="phoneTitle">Phone install</h2>
+          <p style="margin:0" data-i18n="phoneBody">Safari/Chrome → Share / menu → <strong>Add to Home Screen</strong>. Accept emails open the Accept tab with your pack token.</p>
         </div>
       </section>
 
       <section class="app-panel" data-panel="tools" hidden>
-        <h2>Free tools</h2>
-        <p>Real zero-price product. Completing one tool counts as a real loop.</p>
+        <h2 data-i18n="toolsTitle">Free tools</h2>
+        <p data-i18n="toolsBody">Real zero-price product. Completing one tool counts as a real loop.</p>
         <div class="app-field">
-          <label for="toolSel">Tool</label>
+          <label for="toolSel" data-i18n="toolLabel">Tool</label>
           <select id="toolSel">
-            <option value="invoice-summary">Invoice summary (CSV)</option>
-            <option value="wire-memo-check">Wire memo checker</option>
-            <option value="cjk-amount-to-words">Amount in words (zh/en)</option>
+            <option value="invoice-summary" data-i18n="toolInvoice">Invoice summary (CSV)</option>
+            <option value="wire-memo-check" data-i18n="toolWire">Wire memo checker</option>
+            <option value="cjk-amount-to-words" data-i18n="toolAmount">Amount in words (zh/en)</option>
           </select>
         </div>
         <div class="app-field">
-          <label for="toolInput">Input</label>
+          <label for="toolInput" data-i18n="inputLabel">Input</label>
           <textarea id="toolInput" placeholder="csv: description,amount,currency&#10;Acme Ltd,120.50,USD"></textarea>
         </div>
         <div class="app-actions">
-          <button type="button" class="cta" id="btnRunTool">Run free tool</button>
+          <button type="button" class="cta" id="btnRunTool" data-i18n="runTool">Run free tool</button>
         </div>
         <pre class="pack-preview" id="toolOut" hidden></pre>
         <p class="note" id="toolStatus" style="margin-top:10px"></p>
       </section>
 
       <section class="app-panel" data-panel="accept" hidden>
-        <h2>Pack Accept</h2>
-        <p>Open from an emailed Accept link, or paste orderId + token. Settled still needs bank evidence if you later pay.</p>
+        <h2 data-i18n="acceptTitle">Pack Accept</h2>
+        <p data-i18n="acceptBody">Open from an emailed Accept link, or paste orderId + token. Settled still needs bank evidence if you later pay.</p>
         <div class="app-field">
-          <label for="acceptOrderId">Order id</label>
+          <label for="acceptOrderId" data-i18n="orderLabel">Order id</label>
           <input id="acceptOrderId" inputmode="numeric" autocomplete="off" placeholder="e.g. 1014">
         </div>
         <div class="app-field">
-          <label for="acceptToken">Accept token</label>
+          <label for="acceptToken" data-i18n="tokenLabel">Accept token</label>
           <input id="acceptToken" autocomplete="off" placeholder="from pack email">
         </div>
         <div class="app-actions">
-          <button type="button" class="cta" id="btnLoadPack">Load pack</button>
-          <button type="button" class="cta secondary" id="btnAcceptPack" disabled>Accept deliverable</button>
-          <a class="cta secondary" id="guideLink" href="./payment-guide.html">Payment guide</a>
-          <a class="cta secondary" id="classicAcceptLink" href="./metaverse-delivery-accept.html">Classic Accept page</a>
+          <button type="button" class="cta" id="btnLoadPack" data-i18n="loadPack">Load pack</button>
+          <button type="button" class="cta secondary" id="btnAcceptPack" disabled data-i18n="acceptPack">Accept deliverable</button>
+          <button type="button" class="cta secondary" id="btnShareAccept" data-i18n="shareAccept">Share Accept</button>
+          <a class="cta secondary" id="guideLink" href="./payment-guide.html" data-i18n="payGuide">Payment guide</a>
+          <a class="cta secondary" id="classicAcceptLink" href="./metaverse-delivery-accept.html" data-i18n="classicAccept">Classic Accept page</a>
         </div>
         <p class="note" id="acceptStatus" style="margin-top:10px"></p>
         <div id="packCard" hidden>
-          <h2 style="margin-top:14px;font-size:1rem">Pack preview</h2>
+          <h2 style="margin-top:14px;font-size:1rem" data-i18n="packPreview">Pack preview</h2>
           <div class="pack-preview" id="packPreview"></div>
           <div class="app-field" style="margin-top:10px">
-            <label for="acceptFeedback">Feedback (optional)</label>
-            <textarea id="acceptFeedback" placeholder="Defects, waivers, or notes"></textarea>
+            <label for="acceptFeedback" data-i18n="feedbackLabel">Feedback (optional)</label>
+            <textarea id="acceptFeedback" data-i18n-placeholder="feedbackPh" placeholder="Defects, waivers, or notes"></textarea>
           </div>
         </div>
       </section>
 
       <section class="app-panel" data-panel="status" hidden>
-        <h2>Client status</h2>
-        <div class="row"><div class="label">API base</div><div class="value" id="stApi">—</div></div>
-        <div class="row"><div class="label">Client bootstrap</div><div class="value" id="stClient">—</div></div>
-        <div class="row"><div class="label">Delivery handshake</div><div class="value" id="stDelivery">—</div></div>
-        <div class="row"><div class="label">Tools handshake</div><div class="value" id="stTools">—</div></div>
-        <div class="row"><div class="label">Anon id</div><div class="value" id="stAnon">—</div></div>
-        <div class="row"><div class="label">Install</div><div class="value" id="stInstall">browser tab</div></div>
+        <h2 data-i18n="statusTitle">Client status</h2>
+        <div class="row"><div class="label" data-i18n="stApiLabel">API base</div><div class="value" id="stApi">—</div></div>
+        <div class="row"><div class="label" data-i18n="stClientLabel">Client bootstrap</div><div class="value" id="stClient">—</div></div>
+        <div class="row"><div class="label" data-i18n="stDeliveryLabel">Delivery handshake</div><div class="value" id="stDelivery">—</div></div>
+        <div class="row"><div class="label" data-i18n="stToolsLabel">Tools handshake</div><div class="value" id="stTools">—</div></div>
+        <div class="row"><div class="label" data-i18n="stAnonLabel">Anon id</div><div class="value" id="stAnon">—</div></div>
+        <div class="row"><div class="label" data-i18n="stInstallLabel">Install</div><div class="value" id="stInstall">browser tab</div></div>
         <div class="app-actions" style="margin-top:12px">
-          <button type="button" class="cta secondary" id="btnRefreshStatus">Refresh</button>
-          <a class="cta secondary" href="./contact.html">Contact</a>
-          <a class="cta secondary" href="./payment-guide.html">Payment guide</a>
+          <button type="button" class="cta secondary" id="btnRefreshStatus" data-i18n="refresh">Refresh</button>
+          <a class="cta secondary" href="./contact.html" data-i18n="contact">Contact</a>
+          <a class="cta secondary" href="./payment-guide.html" data-i18n="payGuide">Payment guide</a>
         </div>
-        <p class="note" style="margin-top:12px">Detached public surface. Local control plane holds tokens and Settled recognition.</p>
+        <p class="note" style="margin-top:12px" data-i18n="statusNote">Detached public surface. Local control plane holds tokens and Settled recognition.</p>
       </section>
     </main>
 
     <nav class="app-nav" aria-label="Terminal">
-      <button type="button" class="active" data-tab="home"><span class="nav-ico">⌂</span>Home</button>
-      <button type="button" data-tab="tools"><span class="nav-ico">◇</span>Tools</button>
-      <button type="button" data-tab="accept"><span class="nav-ico">✓</span>Accept</button>
-      <button type="button" data-tab="status"><span class="nav-ico">◎</span>Status</button>
+      <button type="button" class="active" data-tab="home"><span class="nav-ico">⌂</span><span data-i18n="navHome">Home</span></button>
+      <button type="button" data-tab="tools"><span class="nav-ico">◇</span><span data-i18n="navTools">Tools</span></button>
+      <button type="button" data-tab="accept"><span class="nav-ico">✓</span><span data-i18n="navAccept">Accept</span></button>
+      <button type="button" data-tab="status"><span class="nav-ico">◎</span><span data-i18n="navStatus">Status</span></button>
     </nav>
   </div>
 
@@ -128,6 +137,143 @@
     var apiBase = "";
     var deferredInstall = null;
     var params = new URLSearchParams(location.search);
+    var lang = "en";
+
+    var I18N = {
+      en: {
+        sub: "Mobile terminal · free-first · Settled never invented",
+        apiResolving: "API: resolving…",
+        installTip: "Install this terminal on your phone",
+        installBtn: "Install",
+        homeTitle: "Enter free",
+        homeBody: "Zero-price join. Settlement is optional and parallel — never a door toll.",
+        joinFree: "Join free",
+        fullEnter: "Full enter page",
+        howWorks: "How it works",
+        phoneTitle: "Phone install",
+        phoneBody: "Safari/Chrome → Share / menu → <strong>Add to Home Screen</strong>. Accept emails open the Accept tab with your pack token.",
+        toolsTitle: "Free tools",
+        toolsBody: "Real zero-price product. Completing one tool counts as a real loop.",
+        toolLabel: "Tool",
+        toolInvoice: "Invoice summary (CSV)",
+        toolWire: "Wire memo checker",
+        toolAmount: "Amount in words (zh/en)",
+        inputLabel: "Input",
+        runTool: "Run free tool",
+        acceptTitle: "Pack Accept",
+        acceptBody: "Open from an emailed Accept link, or paste orderId + token. Settled still needs bank evidence if you later pay.",
+        orderLabel: "Order id",
+        tokenLabel: "Accept token",
+        loadPack: "Load pack",
+        acceptPack: "Accept deliverable",
+        shareAccept: "Share Accept",
+        payGuide: "Payment guide",
+        classicAccept: "Classic Accept page",
+        packPreview: "Pack preview",
+        feedbackLabel: "Feedback (optional)",
+        feedbackPh: "Defects, waivers, or notes",
+        statusTitle: "Client status",
+        stApiLabel: "API base",
+        stClientLabel: "Client bootstrap",
+        stDeliveryLabel: "Delivery handshake",
+        stToolsLabel: "Tools handshake",
+        stAnonLabel: "Anon id",
+        stInstallLabel: "Install",
+        refresh: "Refresh",
+        contact: "Contact",
+        statusNote: "Detached public surface. Local control plane holds tokens and Settled recognition.",
+        navHome: "Home",
+        navTools: "Tools",
+        navAccept: "Accept",
+        navStatus: "Status",
+        shareCopied: "Accept link copied.",
+        shareNeed: "Need orderId + token to share.",
+        shareTitle: "Metaverse Accept"
+      },
+      zh: {
+        sub: "移动终端 · 免费优先 · 从不伪造 Settled",
+        apiResolving: "API：解析中…",
+        installTip: "把此终端安装到手机",
+        installBtn: "安装",
+        homeTitle: "免费进入",
+        homeBody: "零价格加入。结算可选且并行——绝不是入场门槛。",
+        joinFree: "免费加入",
+        fullEnter: "完整进入页",
+        howWorks: "流程说明",
+        phoneTitle: "手机安装",
+        phoneBody: "Safari/Chrome → 分享/菜单 → <strong>添加到主屏幕</strong>。Accept 邮件会打开 Accept 页并带上包令牌。",
+        toolsTitle: "免费工具",
+        toolsBody: "真实零价产品。完成一个工具即计入真实闭环。",
+        toolLabel: "工具",
+        toolInvoice: "发票摘要（CSV）",
+        toolWire: "电汇备注检查",
+        toolAmount: "金额大写（中/英）",
+        inputLabel: "输入",
+        runTool: "运行免费工具",
+        acceptTitle: "交付 Accept",
+        acceptBody: "从邮件 Accept 链接打开，或粘贴 orderId + token。若之后付款，Settled 仍需银行凭证。",
+        orderLabel: "订单号",
+        tokenLabel: "Accept 令牌",
+        loadPack: "加载交付包",
+        acceptPack: "确认 Accept",
+        shareAccept: "分享 Accept",
+        payGuide: "付款指南",
+        classicAccept: "经典 Accept 页",
+        packPreview: "交付包预览",
+        feedbackLabel: "反馈（可选）",
+        feedbackPh: "缺陷、豁免或备注",
+        statusTitle: "客户端状态",
+        stApiLabel: "API 基址",
+        stClientLabel: "客户端引导",
+        stDeliveryLabel: "交付握手",
+        stToolsLabel: "工具握手",
+        stAnonLabel: "匿名 ID",
+        stInstallLabel: "安装状态",
+        refresh: "刷新",
+        contact: "联系",
+        statusNote: "独立公网表面。令牌与 Settled 认定由本地控制面持有。",
+        navHome: "首页",
+        navTools: "工具",
+        navAccept: "Accept",
+        navStatus: "状态",
+        shareCopied: "Accept 链接已复制。",
+        shareNeed: "需要 orderId + token 才能分享。",
+        shareTitle: "元宇宙 Accept"
+      }
+    };
+
+    function t(key) {
+      return (I18N[lang] && I18N[lang][key]) || (I18N.en[key] || key);
+    }
+
+    function applyLang(next) {
+      lang = next === "zh" ? "zh" : "en";
+      try { localStorage.setItem("stone_metaverse_lang", lang); } catch (e) {}
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        var key = el.getAttribute("data-i18n");
+        var val = t(key);
+        if (el.tagName === "OPTION") el.textContent = val;
+        else el.innerHTML = val;
+      });
+      document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+        el.setAttribute("placeholder", t(el.getAttribute("data-i18n-placeholder")));
+      });
+      document.getElementById("btnLangEn").classList.toggle("active", lang === "en");
+      document.getElementById("btnLangZh").classList.toggle("active", lang === "zh");
+      document.title = lang === "zh"
+        ? "元宇宙终端 — 荣远智科"
+        : "Metaverse terminal — Rongyuan Intel Tech";
+    }
+
+    try {
+      var saved = localStorage.getItem("stone_metaverse_lang");
+      if (saved === "zh" || saved === "en") lang = saved;
+      else if (/^zh/i.test(navigator.language || "")) lang = "zh";
+    } catch (e) {}
+
+    document.getElementById("btnLangEn").addEventListener("click", function () { applyLang("en"); });
+    document.getElementById("btnLangZh").addEventListener("click", function () { applyLang("zh"); });
 
     function unwrapApiPayload(body) {
       if (body && typeof body === "object" && body.data != null && typeof body.data === "object"
@@ -148,11 +294,11 @@
 
     function setChip(live, text) {
       var chip = document.getElementById("apiChip");
-      var t = document.getElementById("apiChipText");
+      var tEl = document.getElementById("apiChipText");
       chip.classList.remove("live", "offline");
       if (live === true) chip.classList.add("live");
       if (live === false) chip.classList.add("offline");
-      t.textContent = text;
+      tEl.textContent = text;
     }
 
     function apiUrl(path) {
@@ -209,7 +355,9 @@
     function beacon(kind) {
       var status = document.getElementById("homeStatus");
       if (!apiBase) {
-        if (status) status.textContent = "API bridge missing — open with ?api= or publish api-bridge.json.";
+        if (status) status.textContent = lang === "zh"
+          ? "缺少 API 桥 — 请带 ?api= 打开或发布 api-bridge.json。"
+          : "API bridge missing — open with ?api= or publish api-bridge.json.";
         return;
       }
       fetch(apiUrl("/api/public/free-funnel/beacon"), {
@@ -222,12 +370,14 @@
       }).then(function (r) { return r.json(); }).then(function (j) {
         var b = unwrapApiPayload(j);
         if (status) {
-          status.textContent = "Beacon ok · freeUsers="
+          status.textContent = (lang === "zh" ? "信标成功 · freeUsers=" : "Beacon ok · freeUsers=")
             + ((b.metrics && (b.metrics.FreeUsers || b.metrics.freeUsers))
               || (j.metrics && j.metrics.FreeUsers) || "?");
         }
       }).catch(function () {
-        if (status) status.textContent = "Beacon unreachable (tunnel/CORS).";
+        if (status) status.textContent = lang === "zh"
+          ? "信标不可达（隧道/CORS）。"
+          : "Beacon unreachable (tunnel/CORS).";
       });
     }
 
@@ -240,9 +390,12 @@
       var st = document.getElementById("toolStatus");
       var tool = document.getElementById("toolSel").value;
       var input = document.getElementById("toolInput").value || "";
-      if (!apiBase) { st.textContent = "API bridge not configured."; return; }
+      if (!apiBase) {
+        st.textContent = lang === "zh" ? "未配置 API 桥。" : "API bridge not configured.";
+        return;
+      }
       out.hidden = false;
-      out.textContent = "Running…";
+      out.textContent = lang === "zh" ? "运行中…" : "Running…";
       st.textContent = "";
       var args = tool === "wire-memo-check" ? { memo: input }
                : tool === "cjk-amount-to-words" ? { amount: input, currency: "CNY" }
@@ -256,16 +409,33 @@
         .then(function (res) {
           var b = unwrapApiPayload(res.body);
           out.textContent = b.result || JSON.stringify(b);
-          st.textContent = (res.ok && b.ok !== false) ? "Done — loop counted." : ("Failed: " + (b.error || b.message || "error"));
+          st.textContent = (res.ok && b.ok !== false)
+            ? (lang === "zh" ? "完成 — 已计入闭环。" : "Done — loop counted.")
+            : ((lang === "zh" ? "失败：" : "Failed: ") + (b.error || b.message || "error"));
           if (res.ok && b.ok !== false) beacon("loop-complete");
         })
-        .catch(function () { st.textContent = "Network error running tool."; });
+        .catch(function () {
+          st.textContent = lang === "zh" ? "运行工具时网络错误。" : "Network error running tool.";
+        });
     });
 
     function setAcceptStatus(msg, ok) {
       var el = document.getElementById("acceptStatus");
       el.textContent = msg || "";
       el.className = "note " + (ok === true ? "status-ok" : ok === false ? "status-err" : "");
+    }
+
+    function buildAcceptShareUrl() {
+      var orderId = (document.getElementById("acceptOrderId").value || "").trim();
+      var token = (document.getElementById("acceptToken").value || "").trim();
+      if (!orderId || !token) return "";
+      var u = new URL(location.href);
+      u.hash = "accept";
+      u.search = "";
+      u.searchParams.set("orderId", orderId);
+      u.searchParams.set("token", token);
+      if (apiBase) u.searchParams.set("api", apiBase);
+      return u.toString();
     }
 
     function syncAcceptAuxLinks() {
@@ -286,6 +456,37 @@
       }
     }
 
+    function shareAccept() {
+      var url = buildAcceptShareUrl();
+      if (!url) {
+        setAcceptStatus(t("shareNeed"), false);
+        return;
+      }
+      var payload = { title: t("shareTitle"), text: t("shareTitle"), url: url };
+      if (navigator.share) {
+        navigator.share(payload).then(function () {
+          setAcceptStatus(lang === "zh" ? "已唤起系统分享。" : "System share opened.", true);
+        }).catch(function () {
+          copyAccept(url);
+        });
+      } else {
+        copyAccept(url);
+      }
+    }
+
+    function copyAccept(url) {
+      var done = function () { setAcceptStatus(t("shareCopied"), true); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done).catch(function () {
+          window.prompt(lang === "zh" ? "复制 Accept 链接" : "Copy Accept link", url);
+          done();
+        });
+      } else {
+        window.prompt(lang === "zh" ? "复制 Accept 链接" : "Copy Accept link", url);
+        done();
+      }
+    }
+
     function loadPack() {
       var orderId = parseInt(document.getElementById("acceptOrderId").value || "0", 10) || 0;
       var token = (document.getElementById("acceptToken").value || "").trim();
@@ -293,14 +494,14 @@
       document.getElementById("packCard").hidden = true;
       syncAcceptAuxLinks();
       if (!orderId || !token) {
-        setAcceptStatus("Need orderId and token from your pack email.", false);
+        setAcceptStatus(lang === "zh" ? "需要邮件中的 orderId 与 token。" : "Need orderId and token from your pack email.", false);
         return;
       }
       if (!apiBase) {
-        setAcceptStatus("Need live apiBase (?api= or api-bridge.json).", false);
+        setAcceptStatus(lang === "zh" ? "需要可用 apiBase（?api= 或 api-bridge.json）。" : "Need live apiBase (?api= or api-bridge.json).", false);
         return;
       }
-      setAcceptStatus("Loading pack…", null);
+      setAcceptStatus(lang === "zh" ? "加载交付包…" : "Loading pack…", null);
       fetch(apiUrl("/api/public/metaverse-delivery/view?orderId=" + encodeURIComponent(orderId) + "&token=" + encodeURIComponent(token)), {
         credentials: "omit",
         headers: { "Accept": "application/json" }
@@ -311,7 +512,7 @@
             setAcceptStatus((b && (b.message || b.error || b.note)) || "View failed", false);
             return;
           }
-          setAcceptStatus(b.note || "Pack loaded. Review then Accept.", true);
+          setAcceptStatus(b.note || (lang === "zh" ? "已加载。审阅后 Accept。" : "Pack loaded. Review then Accept."), true);
           if (b.packMarkdown) {
             document.getElementById("packCard").hidden = false;
             document.getElementById("packPreview").textContent = b.packMarkdown;
@@ -319,16 +520,18 @@
           document.getElementById("btnAcceptPack").disabled = false;
         })
         .catch(function (err) {
-          setAcceptStatus("Could not reach Accept API (" + (err && err.message ? err.message : "network") + ").", false);
+          setAcceptStatus((lang === "zh" ? "无法连接 Accept API（" : "Could not reach Accept API (")
+            + (err && err.message ? err.message : "network") + ").", false);
         });
     }
 
     document.getElementById("btnLoadPack").addEventListener("click", loadPack);
+    document.getElementById("btnShareAccept").addEventListener("click", shareAccept);
     document.getElementById("btnAcceptPack").addEventListener("click", function () {
       var orderId = parseInt(document.getElementById("acceptOrderId").value || "0", 10) || 0;
       var token = (document.getElementById("acceptToken").value || "").trim();
       var feedback = (document.getElementById("acceptFeedback").value || "").trim();
-      setAcceptStatus("Submitting…", null);
+      setAcceptStatus(lang === "zh" ? "提交中…" : "Submitting…", null);
       fetch(apiUrl("/api/public/metaverse-delivery/accept"), {
         method: "POST",
         credentials: "omit",
@@ -341,9 +544,11 @@
             setAcceptStatus((b && (b.message || b.error)) || "Accept failed", false);
             return;
           }
-          setAcceptStatus((b && b.message) || "Accepted — free loop recorded", true);
+          setAcceptStatus((b && b.message) || (lang === "zh" ? "已 Accept — 免费闭环已记录" : "Accepted — free loop recorded"), true);
         })
-        .catch(function () { setAcceptStatus("Accept network error.", false); });
+        .catch(function () {
+          setAcceptStatus(lang === "zh" ? "Accept 网络错误。" : "Accept network error.", false);
+        });
     });
 
     function refreshStatus() {
@@ -351,16 +556,17 @@
       document.getElementById("stAnon").textContent = anonId();
       document.getElementById("stInstall").textContent =
         (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone)
-          ? "installed PWA" : "browser tab";
+          ? (lang === "zh" ? "已安装 PWA" : "installed PWA")
+          : (lang === "zh" ? "浏览器标签" : "browser tab");
       document.getElementById("stClient").textContent = "…";
       if (!apiBase) {
         document.getElementById("stDelivery").textContent = "no apiBase";
         document.getElementById("stTools").textContent = "no apiBase";
         document.getElementById("stClient").textContent = "no apiBase";
-        setChip(false, "API: offline / missing bridge");
+        setChip(false, lang === "zh" ? "API：离线 / 缺桥" : "API: offline / missing bridge");
         return;
       }
-      setChip(null, "API: probing " + apiBase);
+      setChip(null, (lang === "zh" ? "API：探测 " : "API: probing ") + apiBase);
       Promise.all([
         fetch(apiUrl("/api/public/metaverse-delivery/handshake"), { credentials: "omit" })
           .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
@@ -378,12 +584,12 @@
           (triple[1].Protocol || triple[1].protocol || "ok") + " · live";
         document.getElementById("stClient").textContent =
           (triple[2].protocol || triple[2].Protocol || "ok") + " · live";
-        setChip(true, "API: live");
+        setChip(true, lang === "zh" ? "API：在线" : "API: live");
       }).catch(function () {
         document.getElementById("stDelivery").textContent = "unreachable";
         document.getElementById("stTools").textContent = "unreachable";
         document.getElementById("stClient").textContent = "unreachable";
-        setChip(false, "API: unreachable");
+        setChip(false, lang === "zh" ? "API：不可达" : "API: unreachable");
       });
     }
 
@@ -415,6 +621,8 @@
     document.getElementById("acceptOrderId").addEventListener("input", syncAcceptAuxLinks);
     document.getElementById("acceptToken").addEventListener("input", syncAcceptAuxLinks);
     syncAcceptAuxLinks();
+    applyLang(lang);
+
     var initialTab = (location.hash || "").replace(/^#/, "") || (params.get("orderId") ? "accept" : "home");
     if (["home", "tools", "accept", "status"].indexOf(initialTab) < 0) initialTab = "home";
     showTab(initialTab);
