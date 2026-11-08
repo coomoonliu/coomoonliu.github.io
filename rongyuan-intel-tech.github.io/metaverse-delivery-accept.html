@@ -48,6 +48,9 @@
     <section class="hero">
       <h1>Metaverse pack accept</h1>
       <p class="lede">Review the pack and Accept to complete the free stranger loop. Settled still needs a real bank reference if you later pay.</p>
+      <div class="actions">
+        <a class="cta" id="openInApp" href="./metaverse-app.html#accept">Open in mobile terminal</a>
+      </div>
     </section>
     <section class="card">
       <h2>Order</h2>
@@ -119,6 +122,16 @@
       el.className = "note " + (ok === true ? "status-ok" : ok === false ? "status-err" : "");
     }
     document.getElementById("orderId").textContent = orderId || "—";
+    (function wireOpenInApp() {
+      var a = document.getElementById("openInApp");
+      if (!a) return;
+      var q = new URLSearchParams();
+      if (orderId) q.set("orderId", String(orderId));
+      if (token) q.set("token", token);
+      var apiQ = (params.get("api") || "").trim();
+      if (apiQ) q.set("api", apiQ);
+      a.href = "./metaverse-app.html?" + q.toString() + "#accept";
+    })();
     if (!orderId || !token) {
       document.getElementById("statusNote").textContent =
         "Missing orderId or token. Use the Accept link from your pack email.";

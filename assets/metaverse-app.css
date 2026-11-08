@@ -1,0 +1,230 @@
+/* Mobile terminal shell — complements site.css; app chrome, not marketing cards. */
+:root {
+  --term-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --term-bar: rgba(15, 28, 46, 0.92);
+  --term-panel: rgba(255, 255, 255, 0.92);
+  --term-glow: rgba(11, 110, 79, 0.18);
+}
+
+html, body.app-shell {
+  height: 100%;
+  overflow: hidden;
+}
+
+body.app-shell {
+  background:
+    radial-gradient(ellipse at 70% -10%, var(--term-glow), transparent 55%),
+    linear-gradient(165deg, #dfe8f0 0%, #f3f6f9 45%, #e8eef3 100%);
+}
+
+.app-frame {
+  max-width: 480px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.app-top {
+  flex: 0 0 auto;
+  padding: 14px 16px 8px;
+  padding-top: max(14px, env(safe-area-inset-top, 14px));
+}
+
+.app-brand {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--ink);
+}
+
+.app-sub {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.app-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--term-panel);
+  border: 1px solid var(--line);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.app-status-chip .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+.app-status-chip.live .dot { background: #16a34a; }
+.app-status-chip.offline .dot { background: #dc2626; }
+
+.app-main {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 8px 16px 96px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-panel {
+  background: var(--term-panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  backdrop-filter: blur(8px);
+}
+
+.app-panel h2 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+}
+
+.app-panel p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.app-panel[hidden] { display: none !important; }
+
+.app-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.app-field label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.app-field input,
+.app-field select,
+.app-field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 12px;
+  font: inherit;
+  background: #fff;
+  color: var(--ink);
+}
+
+.app-field textarea { min-height: 96px; resize: vertical; }
+
+.app-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.app-actions .cta,
+.app-actions button.cta {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.app-actions .cta:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pack-preview {
+  max-height: 240px;
+  overflow: auto;
+  white-space: pre-wrap;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.8rem;
+  background: rgba(15, 28, 46, 0.04);
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+.app-nav {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: min(480px, 100%);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  padding: 8px 10px calc(8px + var(--term-safe-bottom));
+  background: var(--term-bar);
+  color: #fff;
+  border-radius: 18px 18px 0 0;
+  z-index: 40;
+  box-shadow: 0 -8px 28px rgba(15, 28, 46, 0.18);
+}
+
+.app-nav button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 8px 4px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.app-nav button.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.app-nav .nav-ico {
+  display: block;
+  font-size: 1.05rem;
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+
+.install-banner {
+  display: none;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #0b6e4f;
+  color: #fff;
+  font-size: 0.88rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.install-banner.show { display: flex; }
+
+.install-banner button {
+  border: 0;
+  background: #fff;
+  color: #0b6e4f;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.status-ok { color: #166534; }
+.status-err { color: #9b1c1c; }
+
+@media (min-width: 720px) {
+  .app-frame { max-width: 520px; border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+}

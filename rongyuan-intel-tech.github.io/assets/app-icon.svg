@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Rongyuan Metaverse">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b6e4f"/>
+      <stop offset="100%" stop-color="#1b4332"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#g)"/>
+  <circle cx="256" cy="236" r="118" fill="none" stroke="#e8eef3" stroke-width="28"/>
+  <circle cx="256" cy="236" r="42" fill="#e8eef3"/>
+  <path d="M128 390c36-48 92-74 128-74s92 26 128 74" fill="none" stroke="#e8eef3" stroke-width="28" stroke-linecap="round"/>
+</svg>

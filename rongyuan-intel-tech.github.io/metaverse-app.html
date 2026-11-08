@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="index,follow">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#0b6e4f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Metaverse">
+  <title>Metaverse terminal — Rongyuan Intel Tech</title>
+  <meta name="description" content="Installable mobile metaverse terminal: free enter, free tools, pack Accept. Settled is never invented here.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/app-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/app-icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,550;9..144,650&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/site.css">
+  <link rel="stylesheet" href="./assets/metaverse-app.css">
+</head>
+<body class="app-shell">
+  <div class="app-frame">
+    <header class="app-top">
+      <h1 class="app-brand">Rongyuan Metaverse</h1>
+      <p class="app-sub">Mobile terminal · free-first · Settled never invented</p>
+      <div class="app-status-chip" id="apiChip"><span class="dot"></span><span id="apiChipText">API: resolving…</span></div>
+      <div class="install-banner" id="installBanner">
+        <span>Install this terminal on your phone</span>
+        <button type="button" id="btnInstall">Install</button>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <section class="app-panel" data-panel="home">
+        <h2>Enter free</h2>
+        <p>Zero-price join. Settlement is optional and parallel — never a door toll.</p>
+        <div class="app-actions">
+          <button type="button" class="cta" id="btnFreeJoin">Join free</button>
+          <a class="cta secondary" href="./enter.html">Full enter page</a>
+          <a class="cta secondary" href="./process.html">How it works</a>
+        </div>
+        <p class="note" id="homeStatus" style="margin-top:12px"></p>
+        <div class="app-panel" style="margin:14px 0 0;padding:12px;background:rgba(11,110,79,.06);border-style:dashed">
+          <h2 style="font-size:0.95rem">Phone install</h2>
+          <p style="margin:0">Safari/Chrome → Share / menu → <strong>Add to Home Screen</strong>. Accept emails open the Accept tab with your pack token.</p>
+        </div>
+      </section>
+
+      <section class="app-panel" data-panel="tools" hidden>
+        <h2>Free tools</h2>
+        <p>Real zero-price product. Completing one tool counts as a real loop.</p>
+        <div class="app-field">
+          <label for="toolSel">Tool</label>
+          <select id="toolSel">
+            <option value="invoice-summary">Invoice summary (CSV)</option>
+            <option value="wire-memo-check">Wire memo checker</option>
+            <option value="cjk-amount-to-words">Amount in words (zh/en)</option>
+          </select>
+        </div>
+        <div class="app-field">
+          <label for="toolInput">Input</label>
+          <textarea id="toolInput" placeholder="csv: description,amount,currency&#10;Acme Ltd,120.50,USD"></textarea>
+        </div>
+        <div class="app-actions">
+          <button type="button" class="cta" id="btnRunTool">Run free tool</button>
+        </div>
+        <pre class="pack-preview" id="toolOut" hidden></pre>
+        <p class="note" id="toolStatus" style="margin-top:10px"></p>
+      </section>
+
+      <section class="app-panel" data-panel="accept" hidden>
+        <h2>Pack Accept</h2>
+        <p>Open from an emailed Accept link, or paste orderId + token. Settled still needs bank evidence if you later pay.</p>
+        <div class="app-field">
+          <label for="acceptOrderId">Order id</label>
+          <input id="acceptOrderId" inputmode="numeric" autocomplete="off" placeholder="e.g. 1014">
+        </div>
+        <div class="app-field">
+          <label for="acceptToken">Accept token</label>
+          <input id="acceptToken" autocomplete="off" placeholder="from pack email">
+        </div>
+        <div class="app-actions">
+          <button type="button" class="cta" id="btnLoadPack">Load pack</button>
+          <button type="button" class="cta secondary" id="btnAcceptPack" disabled>Accept deliverable</button>
+          <a class="cta secondary" id="guideLink" href="./payment-guide.html">Payment guide</a>
+          <a class="cta secondary" id="classicAcceptLink" href="./metaverse-delivery-accept.html">Classic Accept page</a>
+        </div>
+        <p class="note" id="acceptStatus" style="margin-top:10px"></p>
+        <div id="packCard" hidden>
+          <h2 style="margin-top:14px;font-size:1rem">Pack preview</h2>
+          <div class="pack-preview" id="packPreview"></div>
+          <div class="app-field" style="margin-top:10px">
+            <label for="acceptFeedback">Feedback (optional)</label>
+            <textarea id="acceptFeedback" placeholder="Defects, waivers, or notes"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="app-panel" data-panel="status" hidden>
+        <h2>Client status</h2>
+        <div class="row"><div class="label">API base</div><div class="value" id="stApi">—</div></div>
+        <div class="row"><div class="label">Client bootstrap</div><div class="value" id="stClient">—</div></div>
+        <div class="row"><div class="label">Delivery handshake</div><div class="value" id="stDelivery">—</div></div>
+        <div class="row"><div class="label">Tools handshake</div><div class="value" id="stTools">—</div></div>
+        <div class="row"><div class="label">Anon id</div><div class="value" id="stAnon">—</div></div>
+        <div class="row"><div class="label">Install</div><div class="value" id="stInstall">browser tab</div></div>
+        <div class="app-actions" style="margin-top:12px">
+          <button type="button" class="cta secondary" id="btnRefreshStatus">Refresh</button>
+          <a class="cta secondary" href="./contact.html">Contact</a>
+          <a class="cta secondary" href="./payment-guide.html">Payment guide</a>
+        </div>
+        <p class="note" style="margin-top:12px">Detached public surface. Local control plane holds tokens and Settled recognition.</p>
+      </section>
+    </main>
+
+    <nav class="app-nav" aria-label="Terminal">
+      <button type="button" class="active" data-tab="home"><span class="nav-ico">⌂</span>Home</button>
+      <button type="button" data-tab="tools"><span class="nav-ico">◇</span>Tools</button>
+      <button type="button" data-tab="accept"><span class="nav-ico">✓</span>Accept</button>
+      <button type="button" data-tab="status"><span class="nav-ico">◎</span>Status</button>
+    </nav>
+  </div>
+
+  <script>
+  (function () {
+    var apiBase = "";
+    var deferredInstall = null;
+    var params = new URLSearchParams(location.search);
+
+    function unwrapApiPayload(body) {
+      if (body && typeof body === "object" && body.data != null && typeof body.data === "object"
+          && (body.code != null || body.message != null || body.traceId != null)) {
+        return body.data;
+      }
+      return body || {};
+    }
+
+    function anonId() {
+      try {
+        var k = "stone_free_anon";
+        var v = localStorage.getItem(k);
+        if (!v) { v = "a" + Math.random().toString(36).slice(2, 10); localStorage.setItem(k, v); }
+        return v;
+      } catch (e) { return "web"; }
+    }
+
+    function setChip(live, text) {
+      var chip = document.getElementById("apiChip");
+      var t = document.getElementById("apiChipText");
+      chip.classList.remove("live", "offline");
+      if (live === true) chip.classList.add("live");
+      if (live === false) chip.classList.add("offline");
+      t.textContent = text;
+    }
+
+    function apiUrl(path) {
+      if (apiBase) return apiBase.replace(/\/$/, "") + path;
+      return path;
+    }
+
+    function resolveApiBase() {
+      var fromQuery = (params.get("api") || "").trim().replace(/\/$/, "");
+      if (fromQuery) {
+        apiBase = fromQuery;
+        return Promise.resolve(apiBase);
+      }
+      if (window.STONE_PUBLIC_API) {
+        apiBase = String(window.STONE_PUBLIC_API).replace(/\/$/, "");
+        return Promise.resolve(apiBase);
+      }
+      return fetch("./api-bridge.json", { credentials: "omit", cache: "no-store" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) {
+          if (j && j.apiBase) apiBase = String(j.apiBase).trim().replace(/\/$/, "");
+          return fetch("./site.json", { credentials: "omit", cache: "no-store" })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (site) {
+              if (!apiBase && site && site.publicApiBase) {
+                apiBase = String(site.publicApiBase).trim().replace(/\/$/, "");
+              }
+              if (!apiBase && /\/public\//i.test(location.pathname || "")) {
+                apiBase = location.origin;
+              }
+              return apiBase;
+            });
+        })
+        .catch(function () {
+          if (/\/public\//i.test(location.pathname || "")) apiBase = location.origin;
+          return apiBase;
+        });
+    }
+
+    function showTab(name) {
+      document.querySelectorAll(".app-panel").forEach(function (p) {
+        p.hidden = p.getAttribute("data-panel") !== name;
+      });
+      document.querySelectorAll(".app-nav button").forEach(function (b) {
+        b.classList.toggle("active", b.getAttribute("data-tab") === name);
+      });
+      try { history.replaceState(null, "", "#" + name); } catch (e) {}
+    }
+
+    document.querySelectorAll(".app-nav button").forEach(function (btn) {
+      btn.addEventListener("click", function () { showTab(btn.getAttribute("data-tab")); });
+    });
+
+    function beacon(kind) {
+      var status = document.getElementById("homeStatus");
+      if (!apiBase) {
+        if (status) status.textContent = "API bridge missing — open with ?api= or publish api-bridge.json.";
+        return;
+      }
+      fetch(apiUrl("/api/public/free-funnel/beacon"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ kind: kind || "free-join", detail: "metaverse-app", anonId: anonId() }),
+        mode: "cors",
+        credentials: "omit",
+        referrerPolicy: "no-referrer"
+      }).then(function (r) { return r.json(); }).then(function (j) {
+        var b = unwrapApiPayload(j);
+        if (status) {
+          status.textContent = "Beacon ok · freeUsers="
+            + ((b.metrics && (b.metrics.FreeUsers || b.metrics.freeUsers))
+              || (j.metrics && j.metrics.FreeUsers) || "?");
+        }
+      }).catch(function () {
+        if (status) status.textContent = "Beacon unreachable (tunnel/CORS).";
+      });
+    }
+
+    document.getElementById("btnFreeJoin").addEventListener("click", function () {
+      beacon("free-join");
+    });
+
+    document.getElementById("btnRunTool").addEventListener("click", function () {
+      var out = document.getElementById("toolOut");
+      var st = document.getElementById("toolStatus");
+      var tool = document.getElementById("toolSel").value;
+      var input = document.getElementById("toolInput").value || "";
+      if (!apiBase) { st.textContent = "API bridge not configured."; return; }
+      out.hidden = false;
+      out.textContent = "Running…";
+      st.textContent = "";
+      var args = tool === "wire-memo-check" ? { memo: input }
+               : tool === "cjk-amount-to-words" ? { amount: input, currency: "CNY" }
+               : { csv: input };
+      fetch(apiUrl("/api/public/tools/run"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ tool: tool, args: args, anonId: anonId() }),
+        mode: "cors", credentials: "omit", referrerPolicy: "no-referrer"
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+        .then(function (res) {
+          var b = unwrapApiPayload(res.body);
+          out.textContent = b.result || JSON.stringify(b);
+          st.textContent = (res.ok && b.ok !== false) ? "Done — loop counted." : ("Failed: " + (b.error || b.message || "error"));
+          if (res.ok && b.ok !== false) beacon("loop-complete");
+        })
+        .catch(function () { st.textContent = "Network error running tool."; });
+    });
+
+    function setAcceptStatus(msg, ok) {
+      var el = document.getElementById("acceptStatus");
+      el.textContent = msg || "";
+      el.className = "note " + (ok === true ? "status-ok" : ok === false ? "status-err" : "");
+    }
+
+    function syncAcceptAuxLinks() {
+      var orderId = (document.getElementById("acceptOrderId").value || "").trim();
+      var token = (document.getElementById("acceptToken").value || "").trim();
+      var q = new URLSearchParams();
+      if (orderId) q.set("orderId", orderId);
+      if (token) q.set("token", token);
+      if (apiBase) q.set("api", apiBase);
+      var qs = q.toString();
+      var classic = document.getElementById("classicAcceptLink");
+      var guide = document.getElementById("guideLink");
+      if (classic) classic.href = "./metaverse-delivery-accept.html" + (qs ? ("?" + qs) : "");
+      if (guide) {
+        guide.href = qs
+          ? ("./payment-guide.html?" + qs)
+          : "./payment-guide.html";
+      }
+    }
+
+    function loadPack() {
+      var orderId = parseInt(document.getElementById("acceptOrderId").value || "0", 10) || 0;
+      var token = (document.getElementById("acceptToken").value || "").trim();
+      document.getElementById("btnAcceptPack").disabled = true;
+      document.getElementById("packCard").hidden = true;
+      syncAcceptAuxLinks();
+      if (!orderId || !token) {
+        setAcceptStatus("Need orderId and token from your pack email.", false);
+        return;
+      }
+      if (!apiBase) {
+        setAcceptStatus("Need live apiBase (?api= or api-bridge.json).", false);
+        return;
+      }
+      setAcceptStatus("Loading pack…", null);
+      fetch(apiUrl("/api/public/metaverse-delivery/view?orderId=" + encodeURIComponent(orderId) + "&token=" + encodeURIComponent(token)), {
+        credentials: "omit",
+        headers: { "Accept": "application/json" }
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+        .then(function (res) {
+          var b = unwrapApiPayload(res.body);
+          if (!res.ok || b.ok === false) {
+            setAcceptStatus((b && (b.message || b.error || b.note)) || "View failed", false);
+            return;
+          }
+          setAcceptStatus(b.note || "Pack loaded. Review then Accept.", true);
+          if (b.packMarkdown) {
+            document.getElementById("packCard").hidden = false;
+            document.getElementById("packPreview").textContent = b.packMarkdown;
+          }
+          document.getElementById("btnAcceptPack").disabled = false;
+        })
+        .catch(function (err) {
+          setAcceptStatus("Could not reach Accept API (" + (err && err.message ? err.message : "network") + ").", false);
+        });
+    }
+
+    document.getElementById("btnLoadPack").addEventListener("click", loadPack);
+    document.getElementById("btnAcceptPack").addEventListener("click", function () {
+      var orderId = parseInt(document.getElementById("acceptOrderId").value || "0", 10) || 0;
+      var token = (document.getElementById("acceptToken").value || "").trim();
+      var feedback = (document.getElementById("acceptFeedback").value || "").trim();
+      setAcceptStatus("Submitting…", null);
+      fetch(apiUrl("/api/public/metaverse-delivery/accept"), {
+        method: "POST",
+        credentials: "omit",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ orderId: orderId, token: token, feedback: feedback || null })
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+        .then(function (res) {
+          var b = unwrapApiPayload(res.body);
+          if (!res.ok || b.ok === false) {
+            setAcceptStatus((b && (b.message || b.error)) || "Accept failed", false);
+            return;
+          }
+          setAcceptStatus((b && b.message) || "Accepted — free loop recorded", true);
+        })
+        .catch(function () { setAcceptStatus("Accept network error.", false); });
+    });
+
+    function refreshStatus() {
+      document.getElementById("stApi").textContent = apiBase || "(none)";
+      document.getElementById("stAnon").textContent = anonId();
+      document.getElementById("stInstall").textContent =
+        (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone)
+          ? "installed PWA" : "browser tab";
+      document.getElementById("stClient").textContent = "…";
+      if (!apiBase) {
+        document.getElementById("stDelivery").textContent = "no apiBase";
+        document.getElementById("stTools").textContent = "no apiBase";
+        document.getElementById("stClient").textContent = "no apiBase";
+        setChip(false, "API: offline / missing bridge");
+        return;
+      }
+      setChip(null, "API: probing " + apiBase);
+      Promise.all([
+        fetch(apiUrl("/api/public/metaverse-delivery/handshake"), { credentials: "omit" })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+          .then(function (j) { return unwrapApiPayload(j); }),
+        fetch(apiUrl("/api/public/tools/handshake"), { credentials: "omit" })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+          .then(function (j) { return unwrapApiPayload(j); }),
+        fetch(apiUrl("/api/public/metaverse-client/bootstrap"), { credentials: "omit" })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+          .then(function (j) { return unwrapApiPayload(j); })
+      ]).then(function (triple) {
+        document.getElementById("stDelivery").textContent =
+          (triple[0].Protocol || triple[0].protocol || "ok") + " · live";
+        document.getElementById("stTools").textContent =
+          (triple[1].Protocol || triple[1].protocol || "ok") + " · live";
+        document.getElementById("stClient").textContent =
+          (triple[2].protocol || triple[2].Protocol || "ok") + " · live";
+        setChip(true, "API: live");
+      }).catch(function () {
+        document.getElementById("stDelivery").textContent = "unreachable";
+        document.getElementById("stTools").textContent = "unreachable";
+        document.getElementById("stClient").textContent = "unreachable";
+        setChip(false, "API: unreachable");
+      });
+    }
+
+    document.getElementById("btnRefreshStatus").addEventListener("click", refreshStatus);
+
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault();
+      deferredInstall = e;
+      document.getElementById("installBanner").classList.add("show");
+    });
+    document.getElementById("btnInstall").addEventListener("click", function () {
+      if (!deferredInstall) return;
+      deferredInstall.prompt();
+      deferredInstall.userChoice.finally(function () {
+        deferredInstall = null;
+        document.getElementById("installBanner").classList.remove("show");
+      });
+    });
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js").catch(function () {});
+    }
+
+    // Prefill Accept from query (emailed deeplink into the app).
+    if (params.get("orderId")) document.getElementById("acceptOrderId").value = params.get("orderId");
+    if (params.get("token") || params.get("t")) {
+      document.getElementById("acceptToken").value = params.get("token") || params.get("t");
+    }
+    document.getElementById("acceptOrderId").addEventListener("input", syncAcceptAuxLinks);
+    document.getElementById("acceptToken").addEventListener("input", syncAcceptAuxLinks);
+    syncAcceptAuxLinks();
+    var initialTab = (location.hash || "").replace(/^#/, "") || (params.get("orderId") ? "accept" : "home");
+    if (["home", "tools", "accept", "status"].indexOf(initialTab) < 0) initialTab = "home";
+    showTab(initialTab);
+
+    resolveApiBase().then(function () {
+      syncAcceptAuxLinks();
+      refreshStatus();
+      if (params.get("orderId") && (params.get("token") || params.get("t"))) {
+        showTab("accept");
+        loadPack();
+      } else if (apiBase) {
+        beacon("enter");
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
