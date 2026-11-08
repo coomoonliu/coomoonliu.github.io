@@ -1,6 +1,6 @@
-{
+﻿{
   "brand": "Rongyuan Intel Tech",
-  "tagline": "Produce personal digital assets, publish them in your metaverse space, and trade on the shared platform — free-first. Settled never invented.",
+  "tagline": "Autonomous settlement \u0026 coordination for verified counterparties.",
   "publicBaseUrl": "https://coomoonliu.github.io",
   "pages": [
     "about.html",
@@ -24,11 +24,11 @@
   "architecture": {
     "controlPlane": "local-core",
     "publicSurface": "detached-static-sealed",
-    "sensitiveStorage": "floating-data-shards-external + key-domain-local",
+    "sensitiveStorage": "floating-data-shards-external \u002B key-domain-local",
     "externalCannotSynthesize": true,
     "settledCapital": "verified-remittance-only"
   },
-  "updatedUtc": "2026-11-08T04:26:26.6290942Z",
+  "updatedUtc": "2026-11-08T04:07:27.906165Z",
   "antiTracking": {
     "noLanLinks": true,
     "noEphemeralTunnelLinks": true,
