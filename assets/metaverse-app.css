@@ -258,6 +258,54 @@ body.app-shell {
 .status-ok { color: #166534; }
 .status-err { color: #9b1c1c; }
 
+.asset-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.asset-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.asset-row.selected {
+  border-color: #0b6e4f;
+  box-shadow: inset 0 0 0 1px rgba(11, 110, 79, 0.25);
+}
+
+.asset-meta {
+  font-size: 0.86rem;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.asset-meta span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.asset-actions {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 6px;
+}
+
+.asset-actions .cta {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 7px 10px;
+}
+
 @media (min-width: 720px) {
   .app-frame { max-width: 520px; border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
 }

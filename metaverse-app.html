@@ -93,13 +93,16 @@
           <button type="button" class="cta" id="btnCreateAsset" data-i18n="btnCreateAsset">Create</button>
           <button type="button" class="cta secondary" id="btnPublishSpace" data-i18n="btnPublishSpace" disabled>Publish to my space</button>
           <button type="button" class="cta secondary" id="btnListMarket" data-i18n="btnListMarket" disabled>List on platform</button>
+          <button type="button" class="cta secondary" id="btnShareSpace" data-i18n="btnShareSpace" disabled>Share my space</button>
           <button type="button" class="cta secondary" id="btnRefreshStudio" data-i18n="btnRefreshStudio">Refresh mine / market</button>
         </div>
         <p class="note" id="createStatus" style="margin-top:10px"></p>
         <h2 style="margin-top:14px;font-size:1rem" data-i18n="myAssetsTitle">My assets</h2>
-        <pre class="pack-preview" id="mineOut" hidden></pre>
+        <div class="asset-list" id="mineOut" hidden></div>
         <h2 style="margin-top:14px;font-size:1rem" data-i18n="marketTitle">Platform market (recent)</h2>
-        <pre class="pack-preview" id="marketOut" hidden></pre>
+        <div class="asset-list" id="marketOut" hidden></div>
+        <h2 style="margin-top:14px;font-size:1rem" data-i18n="spaceViewTitle">Space view</h2>
+        <div class="asset-list" id="spaceOut" hidden></div>
       </section>
 
       <section class="app-panel" data-panel="tools" hidden>
@@ -159,6 +162,7 @@
         <div class="row"><div class="label" data-i18n="stClientLabel">Client bootstrap</div><div class="value" id="stClient">—</div></div>
         <div class="row"><div class="label" data-i18n="stDeliveryLabel">Delivery handshake</div><div class="value" id="stDelivery">—</div></div>
         <div class="row"><div class="label" data-i18n="stToolsLabel">Tools handshake</div><div class="value" id="stTools">—</div></div>
+        <div class="row"><div class="label" data-i18n="stStudioLabel">Studio handshake</div><div class="value" id="stStudio">—</div></div>
         <div class="row"><div class="label" data-i18n="stAnonLabel">Anon id</div><div class="value" id="stAnon">—</div></div>
         <div class="row"><div class="label" data-i18n="stInstallLabel">Install</div><div class="value" id="stInstall">browser tab</div></div>
         <div class="app-actions" style="margin-top:12px">
@@ -214,9 +218,15 @@
         btnCreateAsset: "Create",
         btnPublishSpace: "Publish to my space",
         btnListMarket: "List on platform",
+        btnShareSpace: "Share my space",
         btnRefreshStudio: "Refresh mine / market",
+        btnSelectAsset: "Use",
+        btnInterest: "Express interest",
         myAssetsTitle: "My assets",
         marketTitle: "Platform market (recent)",
+        spaceViewTitle: "Space view",
+        emptyAssets: "(none yet)",
+        stStudioLabel: "Studio handshake",
         navCreate: "Create",
         phoneTitle: "Phone install",
         phoneBody: "Safari/Chrome → Share / menu → <strong>Add to Home Screen</strong>. Accept emails open the Accept tab with your pack token.",
@@ -285,9 +295,15 @@
         btnCreateAsset: "创建",
         btnPublishSpace: "发布到我的空间",
         btnListMarket: "上架大平台",
+        btnShareSpace: "分享我的空间",
         btnRefreshStudio: "刷新我的资产 / 市场",
+        btnSelectAsset: "选用",
+        btnInterest: "表达意向",
         myAssetsTitle: "我的资产",
         marketTitle: "平台市场（最近）",
+        spaceViewTitle: "空间浏览",
+        emptyAssets: "（暂无）",
+        stStudioLabel: "工作室握手",
         navCreate: "创建",
         phoneTitle: "手机安装",
         phoneBody: "Safari/Chrome → 分享/菜单 → <strong>添加到主屏幕</strong>。Accept 邮件会打开 Accept 页并带上包令牌。",
@@ -474,6 +490,7 @@
       beacon("free-join");
     });
     var activeProductId = "";
+    var activeSpaceSlug = "";
     document.getElementById("btnGoCreate").addEventListener("click", function () {
       showTab("create");
     });
@@ -487,29 +504,129 @@
     function setStudioButtons() {
       document.getElementById("btnPublishSpace").disabled = !activeProductId;
       document.getElementById("btnListMarket").disabled = !activeProductId;
+      document.getElementById("btnShareSpace").disabled = !activeSpaceSlug;
+    }
+
+    function renderAssetList(el, products, mode) {
+      el.hidden = false;
+      el.innerHTML = "";
+      if (!products || !products.length) {
+        var empty = document.createElement("p");
+        empty.className = "note";
+        empty.textContent = t("emptyAssets");
+        el.appendChild(empty);
+        return;
+      }
+      products.forEach(function (p) {
+        var row = document.createElement("div");
+        row.className = "asset-row" + (p.id === activeProductId ? " selected" : "");
+        var meta = document.createElement("div");
+        meta.className = "asset-meta";
+        meta.innerHTML = "<strong>" + (p.symbol || "") + "</strong> · " + (p.title || "")
+          + "<br><span>" + (p.kind || "") + " · " + (p.status || "")
+          + (p.listPrice != null ? (" · " + p.listPrice + " " + (p.currency || "")) : "")
+          + (p.marketplaceItemId ? (" · mp#" + p.marketplaceItemId) : "")
+          + "</span>";
+        row.appendChild(meta);
+        var actions = document.createElement("div");
+        actions.className = "asset-actions";
+        if (mode === "mine") {
+          var useBtn = document.createElement("button");
+          useBtn.type = "button";
+          useBtn.className = "cta secondary";
+          useBtn.textContent = t("btnSelectAsset");
+          useBtn.addEventListener("click", function () {
+            activeProductId = p.id || "";
+            if (p.spaceSlug) activeSpaceSlug = p.spaceSlug;
+            document.getElementById("assetTitle").value = p.title || "";
+            document.getElementById("assetKind").value = p.kind || "digital-product";
+            document.getElementById("assetSymbol").value = p.symbol || "";
+            document.getElementById("assetDesc").value = p.description || "";
+            document.getElementById("assetPrice").value = p.listPrice != null ? String(p.listPrice) : "";
+            document.getElementById("assetCurrency").value = p.currency || "USD";
+            setStudioButtons();
+            setCreateStatus((lang === "zh" ? "已选用 " : "Selected ") + activeProductId, true);
+            refreshStudioLists();
+          });
+          actions.appendChild(useBtn);
+        } else {
+          var interestBtn = document.createElement("button");
+          interestBtn.type = "button";
+          interestBtn.className = "cta secondary";
+          interestBtn.textContent = t("btnInterest");
+          interestBtn.addEventListener("click", function () { expressInterest(p.id); });
+          actions.appendChild(interestBtn);
+        }
+        row.appendChild(actions);
+        el.appendChild(row);
+      });
+    }
+
+    function expressInterest(productId) {
+      if (!apiBase || !productId) return;
+      setCreateStatus(lang === "zh" ? "提交意向…" : "Sending interest…", null);
+      fetch(apiUrl("/api/public/metaverse-studio/interest"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ productId: productId, anonId: anonId() }),
+        mode: "cors", credentials: "omit"
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+        .then(function (res) {
+          var b = unwrapApiPayload(res.body);
+          if (!res.ok || b.ok === false) {
+            setCreateStatus((b && b.error) || "interest failed", false);
+            return;
+          }
+          setCreateStatus(b.note || (lang === "zh" ? "意向已记录。" : "Interest recorded."), true);
+        })
+        .catch(function () {
+          setCreateStatus(lang === "zh" ? "意向网络错误。" : "Interest network error.", false);
+        });
     }
 
     function refreshStudioLists() {
       var mine = document.getElementById("mineOut");
       var market = document.getElementById("marketOut");
+      var spaceEl = document.getElementById("spaceOut");
       if (!apiBase) {
         setCreateStatus(lang === "zh" ? "需要 API 桥。" : "Need API bridge.", false);
         return;
       }
       mine.hidden = false;
       market.hidden = false;
-      mine.textContent = "…";
-      market.textContent = "…";
-      Promise.all([
+      mine.innerHTML = "…";
+      market.innerHTML = "…";
+      var spaceQ = (params.get("space") || activeSpaceSlug || "").trim();
+      var tasks = [
         fetch(apiUrl("/api/public/metaverse-studio/mine?anonId=" + encodeURIComponent(anonId())), { credentials: "omit" })
           .then(function (r) { return r.json(); }),
         fetch(apiUrl("/api/public/metaverse-studio/market?take=12"), { credentials: "omit" })
           .then(function (r) { return r.json(); })
-      ]).then(function (pair) {
+      ];
+      if (spaceQ) {
+        tasks.push(fetch(apiUrl("/api/public/metaverse-studio/space?owner=" + encodeURIComponent(spaceQ)), { credentials: "omit" })
+          .then(function (r) { return r.json(); }));
+      }
+      Promise.all(tasks).then(function (pair) {
         var mineBody = unwrapApiPayload(pair[0]);
         var marketBody = unwrapApiPayload(pair[1]);
-        mine.textContent = JSON.stringify(mineBody.products || mineBody, null, 2);
-        market.textContent = JSON.stringify(marketBody.products || marketBody, null, 2);
+        var mineProducts = mineBody.products || [];
+        renderAssetList(mine, mineProducts, "mine");
+        renderAssetList(market, marketBody.products || [], "market");
+        if (!activeSpaceSlug && mineProducts.length) {
+          var withSpace = mineProducts.find(function (p) { return p.spaceSlug; });
+          if (withSpace) activeSpaceSlug = withSpace.spaceSlug;
+        }
+        setStudioButtons();
+        if (pair[2]) {
+          var spaceBody = unwrapApiPayload(pair[2]);
+          spaceEl.hidden = false;
+          if (spaceBody.space && spaceBody.space.products) {
+            renderAssetList(spaceEl, spaceBody.space.products, "market");
+          } else {
+            spaceEl.innerHTML = "<p class=\"note\">" + t("emptyAssets") + "</p>";
+          }
+        }
       }).catch(function () {
         setCreateStatus(lang === "zh" ? "刷新列表失败。" : "Could not refresh studio lists.", false);
       });
@@ -566,10 +683,38 @@
             return;
           }
           var slug = b.space && b.space.slug ? b.space.slug : "";
+          if (slug) activeSpaceSlug = slug;
+          setStudioButtons();
           setCreateStatus((lang === "zh" ? "已进入空间 " : "In space ") + slug, true);
           refreshStudioLists();
         })
         .catch(function () { setCreateStatus(lang === "zh" ? "发布网络错误。" : "Publish network error.", false); });
+    });
+
+    document.getElementById("btnShareSpace").addEventListener("click", function () {
+      if (!activeSpaceSlug) {
+        setCreateStatus(lang === "zh" ? "请先发布到空间。" : "Publish to space first.", false);
+        return;
+      }
+      var u = new URL(location.href);
+      u.hash = "create";
+      u.search = "";
+      u.searchParams.set("space", activeSpaceSlug);
+      if (apiBase) u.searchParams.set("api", apiBase);
+      var url = u.toString();
+      var payload = { title: "Metaverse space", text: activeSpaceSlug, url: url };
+      var done = function () { setCreateStatus(lang === "zh" ? "空间链接已复制。" : "Space link copied.", true); };
+      if (navigator.share) {
+        navigator.share(payload).catch(function () {
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done);
+          else { window.prompt("Space", url); done(); }
+        });
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done);
+      } else {
+        window.prompt("Space", url);
+        done();
+      }
     });
 
     document.getElementById("btnListMarket").addEventListener("click", function () {
@@ -776,10 +921,12 @@
           ? (lang === "zh" ? "已安装 PWA" : "installed PWA")
           : (lang === "zh" ? "浏览器标签" : "browser tab");
       document.getElementById("stClient").textContent = "…";
+      document.getElementById("stStudio").textContent = "…";
       if (!apiBase) {
         document.getElementById("stDelivery").textContent = "no apiBase";
         document.getElementById("stTools").textContent = "no apiBase";
         document.getElementById("stClient").textContent = "no apiBase";
+        document.getElementById("stStudio").textContent = "no apiBase";
         setChip(false, lang === "zh" ? "API：离线 / 缺桥" : "API: offline / missing bridge");
         return;
       }
@@ -793,19 +940,25 @@
           .then(function (j) { return unwrapApiPayload(j); }),
         fetch(apiUrl("/api/public/metaverse-client/bootstrap"), { credentials: "omit" })
           .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+          .then(function (j) { return unwrapApiPayload(j); }),
+        fetch(apiUrl("/api/public/metaverse-studio/handshake"), { credentials: "omit" })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
           .then(function (j) { return unwrapApiPayload(j); })
-      ]).then(function (triple) {
+      ]).then(function (quad) {
         document.getElementById("stDelivery").textContent =
-          (triple[0].Protocol || triple[0].protocol || "ok") + " · live";
+          (quad[0].Protocol || quad[0].protocol || "ok") + " · live";
         document.getElementById("stTools").textContent =
-          (triple[1].Protocol || triple[1].protocol || "ok") + " · live";
+          (quad[1].Protocol || quad[1].protocol || "ok") + " · live";
         document.getElementById("stClient").textContent =
-          (triple[2].protocol || triple[2].Protocol || "ok") + " · live";
+          (quad[2].protocol || quad[2].Protocol || "ok") + " · live";
+        document.getElementById("stStudio").textContent =
+          (quad[3].protocol || quad[3].Protocol || "ok") + " · live";
         setChip(true, lang === "zh" ? "API：在线" : "API: live");
       }).catch(function () {
         document.getElementById("stDelivery").textContent = "unreachable";
         document.getElementById("stTools").textContent = "unreachable";
         document.getElementById("stClient").textContent = "unreachable";
+        document.getElementById("stStudio").textContent = "unreachable";
         setChip(false, lang === "zh" ? "API：不可达" : "API: unreachable");
       });
     }

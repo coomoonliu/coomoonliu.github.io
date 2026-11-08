@@ -1,5 +1,5 @@
 /* Metaverse mobile terminal — cache static shell only. Never invent Settled offline. */
-const CACHE = "stone-metaverse-terminal-v3";
+const CACHE = "stone-metaverse-terminal-v4";
 const PRECACHE = [
   "./metaverse-app.html",
   "./assets/site.css",
