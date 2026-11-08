@@ -1,0 +1,15 @@
+{
+  "schema": "stone.detached-guide.v1",
+  "orderId": "8fd7444c-e773-43f0-88ec-8f12443f78e9",
+  "enc": {
+    "alg": "AES-GCM",
+    "nonce": "C9TaGoaHc46PBO/s",
+    "tag": "MQKJHgxFde8bxWVEMQoOWg==",
+    "ciphertext": "ofUHWeyQH/s266KRyz/9x5Tw0Lil/\u002BVmCwZNDV6hEwlZwQHvFsGblBpPgMDnJCP65scLYpjBHPIYVtgZ1AhV/pdDM7lgufrXZy27KZndA98NFDmNT/SUQZxQXsaFsH7\u002BIPEQ8m9HIJRU7udqbwYVGqvSyaseV3e2OAtC/88H4MW9PgdCsiEGdLiSyy3r/5zp0\u002BxMScrSnevZzJCogLBTExy2j\u002BSCrllJ/4EgIiHfU4xyZTr3\u002BhcWEfWTPwjiFyxhvH1k1k03ZUceJ70FtvR8tgoHfB1YgRvbTDdKgDigdQsuFQRumpUrvZ13tdEuSVEVcUEBuDpn9QrwufBQHv0V76dVPajJfVOnwdVS\u002BeHi6kz8qWPPWiDO72YWF2yjYZP1VQc51m0eULFahM6WqY9heQfbfm99Zk0PTZIz\u002BNCXOubSrkkcYDmG0kIGcBNWs73yponZHFXTBFHk\u002B/FtGpfgMg8LKnfekfv0SGKCaPlZfOQg1zzXxmc3fjorfdsm6j5j7X/ltbsmTDYCdOUcg7ZEjk/zow9eBanOvoa8cin6K1Tw6iOWNCVVLIS5ifuvCoFsQjHvvz5sQgTj1A1RN8gHgwo/EaD7AQpUcYfSs5BGMg2O9Ejoyvp9TaFANnOsv9uzGJwqItQXihznzHKl"
+  },
+  "control": {
+    "requiresUnlockToken": true,
+    "note": "Unlock token is issued only by the local control plane (email/CTA). External hosts cannot synthesize plaintext alone."
+  },
+  "updatedUtc": "2026-09-07T22:58:51.9158546Z"
+}

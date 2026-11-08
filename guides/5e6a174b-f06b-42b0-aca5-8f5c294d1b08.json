@@ -1,0 +1,15 @@
+{
+  "schema": "stone.detached-guide.v1",
+  "orderId": "5e6a174b-f06b-42b0-aca5-8f5c294d1b08",
+  "enc": {
+    "alg": "AES-GCM",
+    "nonce": "PMgnNH8H6o3iCVLz",
+    "tag": "SnZ8IDSXYfrCb6ttr413Ug==",
+    "ciphertext": "v76sWX5i4vagfbSg16SLBClgqFFUeBZCT06vWnsxOtq8/exQuJpErdAP5eOgfJY7c9gGSwyTjgMjiIcXJQTRiLdXYOLvVdI9IWXFTjPACQclxnC318jzCFQOdQl8RSaK6WYa25yKApVPtfYc\u002BB0e6rh6SgDaKRa4rC3o1l41C6Ng2JjXEOcsAqjd\u002BhAOOsIfmUPZS2wKbF2dZ0fic6VLUi0uyaTClvlPdQk3NnMv6nwAmlXVpIop0/YI4dgdaOOM1mADAawpyIx3/ilsyjI35knv22ZlgC73x2fLZB6ikI2x8RB3ZOH9hmbccLGSGIqTM4S6OtejBMy6F1\u002BXF\u002BJIwueBMVQl\u002BIaB\u002BV6ctDagsopZZZygSZrD2uhIEVq0o4ec5cZAVljzZ/4kZlKtWY\u002BcKm6zms5D8eBBMMBKA\u002BVTerwscE3/Tg75cln/uwYGZHQjXhhOpp1AX0HCBwFHCoOGf3Dl5ihISK/rwilelPSCE\u002B8e\u002Bw9bwPUx95GF6SxppoPQOzb2\u002BgbtGHVdKmZ5D5T4Nxd\u002BDgNB9vCfik2TMVxrFKwVENtGkxy4Ep4LT\u002BPAqQrKtvPxDDoc2UlPHJkR5madRAIqZp8vEfU5O4wSraj8I6AMt659Y43SmlcCjvwFKlJ2KsRpImNjP1ij\u002BgWH"
+  },
+  "control": {
+    "requiresUnlockToken": true,
+    "note": "Unlock token is issued only by the local control plane (email/CTA). External hosts cannot synthesize plaintext alone."
+  },
+  "updatedUtc": "2026-09-22T02:02:08.1127793Z"
+}

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Delivery accept — Rongyuan Intel Tech</title>
+  <meta name="description" content="Review your deliverable pack and Accept. PaymentGuide unlocks after Accept. Settled requires verified remittance — never invented here.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,550;9..144,650&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/site.css">
+  <style>
+    .pack-preview {
+      max-height: 320px;
+      overflow: auto;
+      white-space: pre-wrap;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 0.85rem;
+      background: rgba(0,0,0,0.04);
+      padding: 12px 14px;
+      border-radius: 8px;
+    }
+    textarea.feedback {
+      width: 100%;
+      min-height: 88px;
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--line, #d9e2ec);
+      border-radius: 8px;
+      font: inherit;
+    }
+    .status-ok { color: #166534; }
+    .status-err { color: #9b1c1c; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a class="brand" href="./index.html">Rongyuan Intel Tech</a>
+      <div class="nav-links">
+        <a href="./process.html">Process</a>
+        <a href="./payment-guide.html">Payment</a>
+        <a href="./contact.html">Contact</a>
+      </div>
+    </nav>
+    <section class="hero">
+      <h1>Delivery accept</h1>
+      <p class="lede">Review the pack, Accept when ready, or send defect feedback. Remittance chase starts only after Accept. Settled still needs a real bank reference.</p>
+    </section>
+    <section class="card">
+      <h2>Order</h2>
+      <div class="row"><div class="label">Marketplace order</div><div class="value" id="orderId">—</div></div>
+      <div class="row"><div class="label">Payment order</div><div class="value" id="paymentOrderId">—</div></div>
+      <div class="row"><div class="label">Amount</div><div class="value" id="amount">—</div></div>
+      <div class="row"><div class="label">Fulfillment</div><div class="value" id="fulfillment">—</div></div>
+      <p class="note" id="statusNote">Open this page from your pack email so the accept token attaches.</p>
+    </section>
+    <section class="card" id="packCard" hidden>
+      <h2>Pack preview</h2>
+      <div class="pack-preview" id="packPreview"></div>
+    </section>
+    <section class="card" id="actionCard" hidden>
+      <h2>Accept or feedback</h2>
+      <p class="note">Optional: describe defects / waivers before Accept.</p>
+      <textarea class="feedback" id="feedback" placeholder="Defects, waivers, or notes (optional)"></textarea>
+      <div class="actions">
+        <button type="button" class="cta" id="btnAccept">Accept deliverable</button>
+        <a class="cta secondary" id="guideLink" href="./payment-guide.html" hidden>Payment guide</a>
+      </div>
+      <p class="note" id="actionStatus"></p>
+    </section>
+    <footer>
+      Detached public surface. Local control plane holds tokens and Settled recognition.
+      Settled capital requires verified remittance evidence — never invented on Accept.
+    </footer>
+  </div>
+  <script>
+  (function () {
+    var params = new URLSearchParams(location.search);
+    var orderId = parseInt(params.get("orderId") || "0", 10) || 0;
+    var token = (params.get("token") || params.get("t") || "").trim();
+    var apiBase = (params.get("api") || "").trim().replace(/\/$/, "");
+    // Prefer same-origin worker bridge when present; else relative /api on sealed host.
+    function apiUrl(path) {
+      if (apiBase) return apiBase + path;
+      return path;
+    }
+    function set(id, v) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = v == null || v === "" ? "—" : String(v);
+    }
+    function setStatus(msg, ok) {
+      var el = document.getElementById("actionStatus");
+      if (!el) return;
+      el.textContent = msg || "";
+      el.className = "note " + (ok === true ? "status-ok" : ok === false ? "status-err" : "");
+    }
+    document.getElementById("orderId").textContent = orderId || "—";
+    if (!orderId || !token) {
+      document.getElementById("statusNote").textContent =
+        "Missing orderId or token. Use the Accept link from your pack email.";
+      return;
+    }
+    fetch(apiUrl("/api/public/marketplace-delivery/view?orderId=" + encodeURIComponent(orderId) + "&token=" + encodeURIComponent(token)), {
+      credentials: "omit",
+      headers: { "Accept": "application/json" }
+    }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, body: j }; }); })
+      .then(function (res) {
+        if (!res.ok) {
+          document.getElementById("statusNote").textContent =
+            (res.body && (res.body.message || res.body.error)) || ("View failed (" + res.status + ")");
+          return;
+        }
+        var b = res.body || {};
+        set("paymentOrderId", b.paymentOrderId);
+        set("amount", (b.amount != null ? b.amount : "—") + (b.currency ? " " + b.currency : ""));
+        set("fulfillment", b.fulfillmentStatus);
+        document.getElementById("statusNote").textContent = b.note || "";
+        if (b.packMarkdown) {
+          document.getElementById("packCard").hidden = false;
+          document.getElementById("packPreview").textContent = b.packMarkdown;
+        }
+        document.getElementById("actionCard").hidden = false;
+        if (b.accepted && b.paymentOrderId) {
+          var gl = document.getElementById("guideLink");
+          gl.hidden = false;
+          gl.href = "./payment-guide.html?orderId=" + encodeURIComponent(b.paymentOrderId);
+        }
+      })
+      .catch(function (e) {
+        document.getElementById("statusNote").textContent =
+          "Could not reach delivery API. If this is a static mirror, open via the sealed worker / control-plane bridge.";
+      });
+
+    document.getElementById("btnAccept").addEventListener("click", function () {
+      var feedback = (document.getElementById("feedback").value || "").trim();
+      setStatus("Submitting…", null);
+      fetch(apiUrl("/api/public/marketplace-delivery/accept"), {
+        method: "POST",
+        credentials: "omit",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ orderId: orderId, token: token, feedback: feedback || null })
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+        .then(function (res) {
+          if (!res.ok) {
+            setStatus((res.body && res.body.message) || "Accept failed", false);
+            return;
+          }
+          setStatus((res.body && res.body.message) || "Accepted", true);
+          set("fulfillment", (res.body && res.body.status) || "Accepted");
+          if (res.body && res.body.paymentGuideUrl) {
+            var gl = document.getElementById("guideLink");
+            gl.hidden = false;
+            var payId = (document.getElementById("paymentOrderId").textContent || "").trim();
+            gl.href = "./payment-guide.html?orderId=" + encodeURIComponent(payId);
+          }
+        })
+        .catch(function () { setStatus("Network error on Accept", false); });
+    });
+  })();
+  </script>
+</body>
+</html>
