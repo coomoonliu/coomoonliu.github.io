@@ -163,7 +163,13 @@
         <div class="row"><div class="label" data-i18n="stDeliveryLabel">Delivery handshake</div><div class="value" id="stDelivery">—</div></div>
         <div class="row"><div class="label" data-i18n="stToolsLabel">Tools handshake</div><div class="value" id="stTools">—</div></div>
         <div class="row"><div class="label" data-i18n="stStudioLabel">Studio handshake</div><div class="value" id="stStudio">—</div></div>
+        <div class="row"><div class="label" data-i18n="stAutonomyLabel">Client autonomy</div><div class="value" id="stAutonomy">—</div></div>
         <div class="row"><div class="label" data-i18n="stAnonLabel">Anon id</div><div class="value" id="stAnon">—</div></div>
+        <div class="app-actions" style="margin-top:8px;margin-bottom:4px">
+          <button type="button" class="cta secondary" id="btnPromotePack" data-i18n="btnPromotePack">Promo pack</button>
+          <button type="button" class="cta secondary" id="btnAdaptHint" data-i18n="btnAdaptHint">Platform adapt</button>
+        </div>
+        <pre class="pack-preview" id="autonomyOut" hidden></pre>
         <div class="row"><div class="label" data-i18n="stInstallLabel">Install</div><div class="value" id="stInstall">browser tab</div></div>
         <div class="app-actions" style="margin-top:12px">
           <button type="button" class="cta secondary" id="btnRefreshStatus" data-i18n="refresh">Refresh</button>
@@ -227,6 +233,9 @@
         spaceViewTitle: "Space view",
         emptyAssets: "(none yet)",
         stStudioLabel: "Studio handshake",
+        stAutonomyLabel: "Client autonomy",
+        btnPromotePack: "Promo pack",
+        btnAdaptHint: "Platform adapt",
         navCreate: "Create",
         phoneTitle: "Phone install",
         phoneBody: "Safari/Chrome → Share / menu → <strong>Add to Home Screen</strong>. Accept emails open the Accept tab with your pack token.",
@@ -304,6 +313,9 @@
         spaceViewTitle: "空间浏览",
         emptyAssets: "（暂无）",
         stStudioLabel: "工作室握手",
+        stAutonomyLabel: "客户端自治",
+        btnPromotePack: "推广包",
+        btnAdaptHint: "平台适配",
         navCreate: "创建",
         phoneTitle: "手机安装",
         phoneBody: "Safari/Chrome → 分享/菜单 → <strong>添加到主屏幕</strong>。Accept 邮件会打开 Accept 页并带上包令牌。",
@@ -922,11 +934,13 @@
           : (lang === "zh" ? "浏览器标签" : "browser tab");
       document.getElementById("stClient").textContent = "…";
       document.getElementById("stStudio").textContent = "…";
+      document.getElementById("stAutonomy").textContent = "…";
       if (!apiBase) {
         document.getElementById("stDelivery").textContent = "no apiBase";
         document.getElementById("stTools").textContent = "no apiBase";
         document.getElementById("stClient").textContent = "no apiBase";
         document.getElementById("stStudio").textContent = "no apiBase";
+        document.getElementById("stAutonomy").textContent = "no apiBase";
         setChip(false, lang === "zh" ? "API：离线 / 缺桥" : "API: offline / missing bridge");
         return;
       }
@@ -953,15 +967,57 @@
           (quad[2].protocol || quad[2].Protocol || "ok") + " · live";
         document.getElementById("stStudio").textContent =
           (quad[3].protocol || quad[3].Protocol || "ok") + " · live";
+        var auto = quad[2].autonomy || {};
+        document.getElementById("stAutonomy").textContent = auto.certified
+          ? ((auto.attestationId || "certified") + " · ok")
+          : ((auto.attestationId || "gap") + " · check");
         setChip(true, lang === "zh" ? "API：在线" : "API: live");
       }).catch(function () {
         document.getElementById("stDelivery").textContent = "unreachable";
         document.getElementById("stTools").textContent = "unreachable";
         document.getElementById("stClient").textContent = "unreachable";
         document.getElementById("stStudio").textContent = "unreachable";
+        document.getElementById("stAutonomy").textContent = "unreachable";
         setChip(false, lang === "zh" ? "API：不可达" : "API: unreachable");
       });
     }
+
+    function guessPlatform() {
+      var ua = navigator.userAgent || "";
+      if (/MicroMessenger/i.test(ua)) return "wechat";
+      if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
+      if (/Android/i.test(ua)) return "android";
+      return "desktop";
+    }
+
+    document.getElementById("btnPromotePack").addEventListener("click", function () {
+      var out = document.getElementById("autonomyOut");
+      if (!apiBase) return;
+      out.hidden = false;
+      out.textContent = "…";
+      fetch(apiUrl("/api/public/metaverse-client/promote?platform=" + encodeURIComponent(guessPlatform())
+          + "&locale=" + encodeURIComponent(lang)), { credentials: "omit" })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          var b = unwrapApiPayload(j);
+          out.textContent = JSON.stringify(b, null, 2);
+        })
+        .catch(function () { out.textContent = "promote unreachable"; });
+    });
+
+    document.getElementById("btnAdaptHint").addEventListener("click", function () {
+      var out = document.getElementById("autonomyOut");
+      if (!apiBase) return;
+      out.hidden = false;
+      out.textContent = "…";
+      fetch(apiUrl("/api/public/metaverse-client/adapt?platform=" + encodeURIComponent(guessPlatform())), { credentials: "omit" })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          var b = unwrapApiPayload(j);
+          out.textContent = JSON.stringify(b, null, 2);
+        })
+        .catch(function () { out.textContent = "adapt unreachable"; });
+    });
 
     document.getElementById("btnRefreshStatus").addEventListener("click", refreshStatus);
 
