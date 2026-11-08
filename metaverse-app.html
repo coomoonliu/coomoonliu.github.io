@@ -26,7 +26,7 @@
       <div class="app-top-row">
         <div>
           <h1 class="app-brand">Rongyuan Metaverse</h1>
-          <p class="app-sub" data-i18n="sub">Mobile terminal · free-first · Settled never invented</p>
+          <p class="app-sub" data-i18n="sub">Produce · personal space · platform trade · Settled never invented</p>
         </div>
         <div class="app-lang" role="group" aria-label="Language">
           <button type="button" id="btnLangEn" class="lang-btn active" data-lang="en">EN</button>
@@ -43,9 +43,10 @@
     <main class="app-main">
       <section class="app-panel" data-panel="home">
         <h2 data-i18n="homeTitle">Enter free</h2>
-        <p data-i18n="homeBody">Zero-price join. Settlement is optional and parallel — never a door toll.</p>
+        <p data-i18n="homeBody">Create personal digital products and utility tokens, publish them in your metaverse space, and list them on the shared market. Settlement stays optional and evidence-based.</p>
         <div class="app-actions">
           <button type="button" class="cta" id="btnFreeJoin" data-i18n="joinFree">Join free</button>
+          <button type="button" class="cta secondary" id="btnGoCreate" data-i18n="goCreate">Create digital asset</button>
           <a class="cta secondary" href="./enter.html" data-i18n="fullEnter">Full enter page</a>
           <a class="cta secondary" href="./process.html" data-i18n="howWorks">How it works</a>
         </div>
@@ -54,6 +55,51 @@
           <h2 style="font-size:0.95rem" data-i18n="phoneTitle">Phone install</h2>
           <p style="margin:0" data-i18n="phoneBody">Safari/Chrome → Share / menu → <strong>Add to Home Screen</strong>. Accept emails open the Accept tab with your pack token.</p>
         </div>
+      </section>
+
+      <section class="app-panel" data-panel="create" hidden>
+        <h2 data-i18n="createTitle">Produce &amp; trade</h2>
+        <p data-i18n="createBody">Mint a platform-ledger digital product or utility token, put it in your personal space, then list it on the big marketplace. Not an invented Settled balance.</p>
+        <div class="app-field">
+          <label for="assetTitle" data-i18n="assetTitleLabel">Title</label>
+          <input id="assetTitle" maxlength="120" placeholder="e.g. Studio credit pack">
+        </div>
+        <div class="app-field">
+          <label for="assetKind" data-i18n="assetKindLabel">Kind</label>
+          <select id="assetKind">
+            <option value="digital-product" data-i18n="kindProduct">Digital product</option>
+            <option value="utility-token" data-i18n="kindToken">Utility token / currency-like</option>
+            <option value="media-pack" data-i18n="kindMedia">Media pack</option>
+            <option value="scene-good" data-i18n="kindScene">Scene good</option>
+          </select>
+        </div>
+        <div class="app-field">
+          <label for="assetSymbol" data-i18n="assetSymbolLabel">Symbol</label>
+          <input id="assetSymbol" maxlength="12" placeholder="e.g. RYC">
+        </div>
+        <div class="app-field">
+          <label for="assetDesc" data-i18n="assetDescLabel">Description</label>
+          <textarea id="assetDesc" data-i18n-placeholder="assetDescPh" placeholder="What buyers receive in your space / on the market"></textarea>
+        </div>
+        <div class="app-field">
+          <label for="assetPrice" data-i18n="assetPriceLabel">List price (offer)</label>
+          <input id="assetPrice" inputmode="decimal" placeholder="0">
+        </div>
+        <div class="app-field">
+          <label for="assetCurrency" data-i18n="assetCurrencyLabel">Currency</label>
+          <input id="assetCurrency" maxlength="10" value="USD">
+        </div>
+        <div class="app-actions">
+          <button type="button" class="cta" id="btnCreateAsset" data-i18n="btnCreateAsset">Create</button>
+          <button type="button" class="cta secondary" id="btnPublishSpace" data-i18n="btnPublishSpace" disabled>Publish to my space</button>
+          <button type="button" class="cta secondary" id="btnListMarket" data-i18n="btnListMarket" disabled>List on platform</button>
+          <button type="button" class="cta secondary" id="btnRefreshStudio" data-i18n="btnRefreshStudio">Refresh mine / market</button>
+        </div>
+        <p class="note" id="createStatus" style="margin-top:10px"></p>
+        <h2 style="margin-top:14px;font-size:1rem" data-i18n="myAssetsTitle">My assets</h2>
+        <pre class="pack-preview" id="mineOut" hidden></pre>
+        <h2 style="margin-top:14px;font-size:1rem" data-i18n="marketTitle">Platform market (recent)</h2>
+        <pre class="pack-preview" id="marketOut" hidden></pre>
       </section>
 
       <section class="app-panel" data-panel="tools" hidden>
@@ -126,6 +172,7 @@
 
     <nav class="app-nav" aria-label="Terminal">
       <button type="button" class="active" data-tab="home"><span class="nav-ico">⌂</span><span data-i18n="navHome">Home</span></button>
+      <button type="button" data-tab="create"><span class="nav-ico">✦</span><span data-i18n="navCreate">Create</span></button>
       <button type="button" data-tab="tools"><span class="nav-ico">◇</span><span data-i18n="navTools">Tools</span></button>
       <button type="button" data-tab="accept"><span class="nav-ico">✓</span><span data-i18n="navAccept">Accept</span></button>
       <button type="button" data-tab="status"><span class="nav-ico">◎</span><span data-i18n="navStatus">Status</span></button>
@@ -141,15 +188,36 @@
 
     var I18N = {
       en: {
-        sub: "Mobile terminal · free-first · Settled never invented",
+        sub: "Produce · personal space · platform trade · Settled never invented",
         apiResolving: "API: resolving…",
         installTip: "Install this terminal on your phone",
         installBtn: "Install",
         homeTitle: "Enter free",
-        homeBody: "Zero-price join. Settlement is optional and parallel — never a door toll.",
+        homeBody: "Create personal digital products and utility tokens, publish them in your metaverse space, and list them on the shared market. Settlement stays optional and evidence-based.",
         joinFree: "Join free",
+        goCreate: "Create digital asset",
         fullEnter: "Full enter page",
         howWorks: "How it works",
+        createTitle: "Produce &amp; trade",
+        createBody: "Mint a platform-ledger digital product or utility token, put it in your personal space, then list it on the big marketplace. Not an invented Settled balance.",
+        assetTitleLabel: "Title",
+        assetKindLabel: "Kind",
+        kindProduct: "Digital product",
+        kindToken: "Utility token / currency-like",
+        kindMedia: "Media pack",
+        kindScene: "Scene good",
+        assetSymbolLabel: "Symbol",
+        assetDescLabel: "Description",
+        assetDescPh: "What buyers receive in your space / on the market",
+        assetPriceLabel: "List price (offer)",
+        assetCurrencyLabel: "Currency",
+        btnCreateAsset: "Create",
+        btnPublishSpace: "Publish to my space",
+        btnListMarket: "List on platform",
+        btnRefreshStudio: "Refresh mine / market",
+        myAssetsTitle: "My assets",
+        marketTitle: "Platform market (recent)",
+        navCreate: "Create",
         phoneTitle: "Phone install",
         phoneBody: "Safari/Chrome → Share / menu → <strong>Add to Home Screen</strong>. Accept emails open the Accept tab with your pack token.",
         toolsTitle: "Free tools",
@@ -191,15 +259,36 @@
         shareTitle: "Metaverse Accept"
       },
       zh: {
-        sub: "移动终端 · 免费优先 · 从不伪造 Settled",
+        sub: "生产 · 个人空间 · 平台交易 · 从不伪造 Settled",
         apiResolving: "API：解析中…",
         installTip: "把此终端安装到手机",
         installBtn: "安装",
         homeTitle: "免费进入",
-        homeBody: "零价格加入。结算可选且并行——绝不是入场门槛。",
+        homeBody: "生产个人数字产品与平台效用代币，发布到自己的元宇宙空间，并在大平台上架交易。结算仍可选且以凭证为准。",
         joinFree: "免费加入",
+        goCreate: "创建数字资产",
         fullEnter: "完整进入页",
         howWorks: "流程说明",
+        createTitle: "生产与交易",
+        createBody: "铸造平台账本上的数字产品或效用代币，放入个人空间，再上架大市场。这不是伪造的 Settled 余额。",
+        assetTitleLabel: "标题",
+        assetKindLabel: "类型",
+        kindProduct: "数字产品",
+        kindToken: "效用代币 / 类货币",
+        kindMedia: "媒体包",
+        kindScene: "场景商品",
+        assetSymbolLabel: "代号",
+        assetDescLabel: "描述",
+        assetDescPh: "买家在你的空间 / 市场上获得什么",
+        assetPriceLabel: "挂牌价（报价）",
+        assetCurrencyLabel: "币种",
+        btnCreateAsset: "创建",
+        btnPublishSpace: "发布到我的空间",
+        btnListMarket: "上架大平台",
+        btnRefreshStudio: "刷新我的资产 / 市场",
+        myAssetsTitle: "我的资产",
+        marketTitle: "平台市场（最近）",
+        navCreate: "创建",
         phoneTitle: "手机安装",
         phoneBody: "Safari/Chrome → 分享/菜单 → <strong>添加到主屏幕</strong>。Accept 邮件会打开 Accept 页并带上包令牌。",
         toolsTitle: "免费工具",
@@ -384,6 +473,134 @@
     document.getElementById("btnFreeJoin").addEventListener("click", function () {
       beacon("free-join");
     });
+    var activeProductId = "";
+    document.getElementById("btnGoCreate").addEventListener("click", function () {
+      showTab("create");
+    });
+
+    function setCreateStatus(msg, ok) {
+      var el = document.getElementById("createStatus");
+      el.textContent = msg || "";
+      el.className = "note " + (ok === true ? "status-ok" : ok === false ? "status-err" : "");
+    }
+
+    function setStudioButtons() {
+      document.getElementById("btnPublishSpace").disabled = !activeProductId;
+      document.getElementById("btnListMarket").disabled = !activeProductId;
+    }
+
+    function refreshStudioLists() {
+      var mine = document.getElementById("mineOut");
+      var market = document.getElementById("marketOut");
+      if (!apiBase) {
+        setCreateStatus(lang === "zh" ? "需要 API 桥。" : "Need API bridge.", false);
+        return;
+      }
+      mine.hidden = false;
+      market.hidden = false;
+      mine.textContent = "…";
+      market.textContent = "…";
+      Promise.all([
+        fetch(apiUrl("/api/public/metaverse-studio/mine?anonId=" + encodeURIComponent(anonId())), { credentials: "omit" })
+          .then(function (r) { return r.json(); }),
+        fetch(apiUrl("/api/public/metaverse-studio/market?take=12"), { credentials: "omit" })
+          .then(function (r) { return r.json(); })
+      ]).then(function (pair) {
+        var mineBody = unwrapApiPayload(pair[0]);
+        var marketBody = unwrapApiPayload(pair[1]);
+        mine.textContent = JSON.stringify(mineBody.products || mineBody, null, 2);
+        market.textContent = JSON.stringify(marketBody.products || marketBody, null, 2);
+      }).catch(function () {
+        setCreateStatus(lang === "zh" ? "刷新列表失败。" : "Could not refresh studio lists.", false);
+      });
+    }
+
+    document.getElementById("btnCreateAsset").addEventListener("click", function () {
+      if (!apiBase) { setCreateStatus(lang === "zh" ? "需要 API 桥。" : "Need API bridge.", false); return; }
+      var title = (document.getElementById("assetTitle").value || "").trim();
+      if (!title) { setCreateStatus(lang === "zh" ? "请填写标题。" : "Title required.", false); return; }
+      var priceRaw = (document.getElementById("assetPrice").value || "").trim();
+      var price = priceRaw ? parseFloat(priceRaw) : 0;
+      setCreateStatus(lang === "zh" ? "创建中…" : "Creating…", null);
+      fetch(apiUrl("/api/public/metaverse-studio/create"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          anonId: anonId(),
+          title: title,
+          kind: document.getElementById("assetKind").value,
+          description: document.getElementById("assetDesc").value || "",
+          symbol: document.getElementById("assetSymbol").value || "",
+          listPrice: isFinite(price) ? price : 0,
+          currency: document.getElementById("assetCurrency").value || "USD"
+        }),
+        mode: "cors", credentials: "omit", referrerPolicy: "no-referrer"
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+        .then(function (res) {
+          var b = unwrapApiPayload(res.body);
+          if (!res.ok || b.ok === false) {
+            setCreateStatus((b && b.error) || "create failed", false);
+            return;
+          }
+          activeProductId = (b.product && b.product.id) || "";
+          setStudioButtons();
+          setCreateStatus((lang === "zh" ? "已创建 " : "Created ") + activeProductId, true);
+          refreshStudioLists();
+        })
+        .catch(function () { setCreateStatus(lang === "zh" ? "创建网络错误。" : "Create network error.", false); });
+    });
+
+    document.getElementById("btnPublishSpace").addEventListener("click", function () {
+      if (!activeProductId || !apiBase) return;
+      setCreateStatus(lang === "zh" ? "发布到空间…" : "Publishing to space…", null);
+      fetch(apiUrl("/api/public/metaverse-studio/publish-space"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ productId: activeProductId, anonId: anonId(), spaceName: "" }),
+        mode: "cors", credentials: "omit"
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+        .then(function (res) {
+          var b = unwrapApiPayload(res.body);
+          if (!res.ok || b.ok === false) {
+            setCreateStatus((b && b.error) || "publish failed", false);
+            return;
+          }
+          var slug = b.space && b.space.slug ? b.space.slug : "";
+          setCreateStatus((lang === "zh" ? "已进入空间 " : "In space ") + slug, true);
+          refreshStudioLists();
+        })
+        .catch(function () { setCreateStatus(lang === "zh" ? "发布网络错误。" : "Publish network error.", false); });
+    });
+
+    document.getElementById("btnListMarket").addEventListener("click", function () {
+      if (!activeProductId || !apiBase) return;
+      var priceRaw = (document.getElementById("assetPrice").value || "").trim();
+      var price = priceRaw ? parseFloat(priceRaw) : null;
+      setCreateStatus(lang === "zh" ? "上架中…" : "Listing…", null);
+      fetch(apiUrl("/api/public/metaverse-studio/list-market"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          productId: activeProductId,
+          anonId: anonId(),
+          price: (price != null && isFinite(price)) ? price : null,
+          currency: document.getElementById("assetCurrency").value || "USD"
+        }),
+        mode: "cors", credentials: "omit"
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+        .then(function (res) {
+          var b = unwrapApiPayload(res.body);
+          if (!res.ok || b.ok === false) {
+            setCreateStatus((b && b.error) || "list failed", false);
+            return;
+          }
+          setCreateStatus((lang === "zh" ? "已上架 mp#" : "Listed mp#") + (b.marketplaceItemId || "?"), true);
+          refreshStudioLists();
+        })
+        .catch(function () { setCreateStatus(lang === "zh" ? "上架网络错误。" : "List network error.", false); });
+    });
+
+    document.getElementById("btnRefreshStudio").addEventListener("click", refreshStudioLists);
 
     document.getElementById("btnRunTool").addEventListener("click", function () {
       var out = document.getElementById("toolOut");
@@ -623,8 +840,9 @@
     syncAcceptAuxLinks();
     applyLang(lang);
 
+    setStudioButtons();
     var initialTab = (location.hash || "").replace(/^#/, "") || (params.get("orderId") ? "accept" : "home");
-    if (["home", "tools", "accept", "status"].indexOf(initialTab) < 0) initialTab = "home";
+    if (["home", "create", "tools", "accept", "status"].indexOf(initialTab) < 0) initialTab = "home";
     showTab(initialTab);
 
     resolveApiBase().then(function () {
@@ -636,6 +854,7 @@
       } else if (apiBase) {
         beacon("enter");
       }
+      if (initialTab === "create" && apiBase) refreshStudioLists();
     });
   })();
   </script>

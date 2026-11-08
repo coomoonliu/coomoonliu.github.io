@@ -195,7 +195,7 @@ body.app-shell {
   bottom: 0;
   width: min(480px, 100%);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 2px;
   padding: 8px 10px calc(8px + var(--term-safe-bottom));
   background: var(--term-bar);
