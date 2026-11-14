@@ -1,6 +1,6 @@
 ﻿{
   "brand": "Rongyuan Intel Tech",
-  "tagline": "Produce personal digital assets, publish them in your metaverse space, and trade on the shared platform \u2014 free-first. Settled never invented.",
+  "tagline": "Autonomous settlement \u0026 coordination for verified counterparties.",
   "publicBaseUrl": "https://coomoonliu.github.io",
   "pages": [
     "about.html",
@@ -9,12 +9,19 @@
     "enter.html",
     "faq.html",
     "index.html",
+    "metaverse-app.html",
+    "metaverse-delivery-accept.html",
     "payment-guide.html",
     "privacy.html",
     "process.html",
-    "products.html",
     "settlement.html"
   ],
+  "mobileTerminal": {
+    "startUrl": "./metaverse-app.html",
+    "manifest": "./manifest.webmanifest",
+    "serviceWorker": "./sw.js",
+    "note": "Installable PWA for free enter / free tools / pack Accept. Settled never invented."
+  },
   "settlement": {
     "mode": "token-unlocked-sealed-guide",
     "note": "Wire/crypto details are AES-GCM sealed under guides/*.json; unlock tokens stay on the local control plane."
@@ -28,7 +35,7 @@
     "externalCannotSynthesize": true,
     "settledCapital": "verified-remittance-only"
   },
-  "updatedUtc": "2026-11-14T05:23:25.5843107Z",
+  "updatedUtc": "2026-11-07T15:13:39.4462147Z",
   "antiTracking": {
     "noLanLinks": true,
     "noEphemeralTunnelLinks": true,
