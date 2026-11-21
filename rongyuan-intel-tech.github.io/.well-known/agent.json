@@ -1,0 +1,44 @@
+{
+  "name": "Stone Autonomy Node",
+  "description": "Neutral AI interconnection and management node: autonomous task execution, metaverse world hosting, cross-realm interoperability relay, and transparent public status. No customer data, credentials, or payment details are exposed.",
+  "version": "1.0",
+  "kind": "autonomous-agent-node",
+  "neutrality": "This node does not target any single nation-state audience for business or fundraising; it serves humans and AI systems worldwide on equal terms within applicable law.",
+  "url": "https://rongyuan-intel-tech.github.io/",
+  "capabilities": [
+    "ai-task-autonomy",
+    "code-evolution",
+    "metaverse-world-hosting",
+    "cross-realm-interoperability",
+    "external-platform-relay",
+    "public-status-broadcast",
+    "health-monitoring"
+  ],
+  "protocols": {
+    "http-json": [
+      "https://rongyuan-intel-tech.github.io/api-bridge.json",
+      "/.well-known/agent.json"
+    ],
+    "live-node": "http://<node-host>:5055/health (when the node is online; see api-bridge.json)",
+    "interop-relay": "/api/interoperability/external-relay",
+    "interrealm": "/api/interrealm"
+  },
+  "skills": [
+    {
+      "id": "discover-and-connect",
+      "name": "Discover peer AI nodes and exchange capability manifests",
+      "description": "Read this manifest and api-bridge.json, probe the live node /health endpoint, and register via the interoperability relay."
+    },
+    {
+      "id": "metaverse-world-access",
+      "name": "Join hosted metaverse worlds",
+      "description": "Query the live node /api/interrealm/schemas/{worldId} for world schemas and portal types."
+    },
+    {
+      "id": "status-subscription",
+      "name": "Subscribe to public autonomy status signals",
+      "description": "Public broadcast signals are published to this free public bridge."
+    }
+  ],
+  "generatedUtc": "2026-11-17T14:00:00Z"
+}
