@@ -3,13 +3,13 @@
   "orderId": "MV-1306-f8c4be12",
   "enc": {
     "alg": "AES-GCM",
-    "nonce": "N7DU1s9T6fptEjbo",
-    "tag": "w8axQhKvJrfYe8gP5x5gag==",
-    "ciphertext": "s2Ejztg7GHN6CSovPPXTKA6rbd5koNr/Hs4S59Gyl0TbR1NzMvmNFWXN0rMzHDIAQe6k/TrkBReoziMtQwB\u002BHwezMDF3NVd9TBJaxb73JqFTxGGJGGCYN\u002BVWq04co79T8Q9TPMrdpoMPDtYz\u002BW52dpg\u002BGJoMfkujoQjNgT15O5mDqFaWZBmkO4\u002BJ3v4gmiJtQyg/yA2GF1W5HaZ3Q86wyuo32loSIHUphvjaTR4Qvr4VpwdiZQrV81gVBAnQQu3Fiz0XRsTAteK\u002BL6yw72h9vG0zA/xYDyVJziN5m6/awq\u002BCUD0Xg1JYOuj8jMx8J9JmgFkOM9ILyY56APplHksFGRSmdjdRCIG7Hvo0YtJczPW07BuWQYy0GGmIVLoUKejvhUqXSGtV97XDmWf4w9Gf78nUBqC0\u002Brg7cTXCSHh3bjUPGmXuEebZcb2l9vFlH3YbEwyUauV40NhTRiAEgrU/UssoP9mxUlSY26j\u002BgMON8f1IFFNG6nDqCLj1ZiceJo9HOZD65jMAnKNMs/os2df6FmkOi1qMZytbJRdVxIlNYatN4crIGAAPlVeCsMLbd7IJmt\u002B/1LRjJmvbApV/khGG838CIooDH96HfMyZ1jXtE0ilu\u002Bx/A9AJ\u002BA=="
+    "nonce": "hKQ2tOkvZrR/ZmIL",
+    "tag": "kg0r8WlqXge\u002BFZST0lkGBA==",
+    "ciphertext": "xvD6E7f3APBc/apB7Pg7jLor78Jj9EkJo7AHsMEOg1cxDhOuqg3MUBKZ\u002BI0Gg5Kt6UVHulbBHUF15yp\u002BOzHdwEyZTPlca0q5NgQFdZmBEKMyrxb1OCDPZXQAdw3lhKAkShm\u002BnPwk88GDmqHnZHFrDRmWI97vs90\u002BYcDCe/g8Zh9VZ1/ILIG4zkzVQLOaWRxdnrRP9R0FQhlOOLtrMO6umeRaQuXeX7I5zK\u002BfoKfgck/q5cTyqsWsXjxtlkHtCS68UnZj1Z7uk7JsQDEQ\u002BaPyFV2jj4ey1581o9E\u002BZAIQRCpniZkl31n09FCU8TKly5EzDXRiOtBouJ0d9iSp97ZF71rSuc8GF6SAoZz/vcGI30D0yTy6ynZHz0WoP0B\u002B1j4wSAgkSG0sCv3cmKWUs7dnXjWGRrp4e487zM23qVaqxSuIfLr6MyRrRu/3hKI7yx6uLeudEDi876qAGBVPxnOgqURvuYt/UTRNPwE5C0hTPtVFZlgVH0JmY9znpDLZ5bqGBdwe7CpgAQl6EXWVmYOyua1raQWI3gDP0aOBbh9ISNgQOdgFZJsizYZSdEbUoAVo3A8XecjWPPrCir7mPatGPAjsEHE6cDYN1qtIFNZY1nBekC9C5vp9Ag=="
   },
   "control": {
     "requiresUnlockToken": true,
     "note": "Unlock token is issued only by the local control plane (email/CTA). External hosts cannot synthesize plaintext alone."
   },
-  "updatedUtc": "2026-11-25T14:40:28.5047664Z"
+  "updatedUtc": "2026-11-25T19:46:34.967858Z"
 }
